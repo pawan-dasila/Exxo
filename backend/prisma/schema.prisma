@@ -1,0 +1,402 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ------------------------------------------------------
+// 1. AUTHENTICATION, IDENTITY & TRUST
+// ------------------------------------------------------
+
+enum Role {
+  USER // Unified role: can both lend and borrow
+  ADMIN
+}
+
+enum VerificationStatus {
+  UNVERIFIED
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model User {
+  id              String  @id @default(uuid())
+  email           String  @unique
+  firstName       String?
+  lastName        String?
+  phoneNumber     String? @unique
+  profileImageUrl String?
+  bio             String? @db.Text
+  role            Role    @default(USER)
+
+  // Trust & Safety
+  verificationStatus VerificationStatus @default(UNVERIFIED)
+  isEmailVerified    Boolean            @default(false)
+  avgRating          Float              @default(0.0)
+
+  isActive     Boolean  @default(true)
+  refreshToken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  authProviders AuthProvider[]
+  addresses     Address[]
+
+  // P2P Relations
+  listings     Product[]     @relation("UserListings") // Items they are lending
+  rentalOrders RentalOrder[] @relation("UserOrders") // Items they are borrowing
+
+  payouts         Payout[] // For lenders to track earnings
+  reviewsGiven    Review[]       @relation("ReviewsGiven")
+  reviewsReceived Review[]       @relation("ReviewsReceived")
+  wishlistItems   WishlistItem[]
+  cart            Cart?
+  notifications   Notification[]
+}
+
+enum Provider {
+  EMAIL
+  GOOGLE
+}
+
+model AuthProvider {
+  id             String   @id @default(uuid())
+  userId         String
+  provider       Provider
+  providerUserId String?
+  passwordHash   String?
+  createdAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, provider])
+}
+
+enum AddressLabel {
+  HOME
+  WORK
+  OTHER
+}
+
+model Address {
+  id        String       @id @default(uuid())
+  userId    String
+  street    String
+  city      String
+  state     String
+  country   String
+  zipCode   String
+  latitude  Float?
+  longitude Float?
+  label     AddressLabel @default(HOME)
+  isDefault Boolean      @default(false)
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rentalOrders RentalOrder[]
+
+  @@index([userId])
+}
+
+// ------------------------------------------------------
+// 2. P2P CATALOG & INVENTORY
+// ------------------------------------------------------
+
+model Category {
+  id               String  @id @default(uuid())
+  name             String
+  slug             String  @unique
+  description      String? @db.Text
+  parentCategoryId String?
+  imageUrl         String?
+
+  parentCategory Category?  @relation("CategoryToCategory", fields: [parentCategoryId], references: [id], onDelete: SetNull)
+  subCategories  Category[] @relation("CategoryToCategory")
+  products       Product[]
+}
+
+model Brand {
+  id       String    @id @default(uuid())
+  name     String    @unique
+  logoUrl  String?
+  products Product[]
+}
+
+model Product {
+  id          String  @id @default(uuid())
+  name        String
+  slug        String  @unique
+  description String? @db.Text
+  size        String
+  color       String?
+
+  // Pricing
+  retailPrice   Float? // Optional: Original value of the item
+  rentalPrice   Float // Price per day
+  depositAmount Float // Security deposit for P2P safety
+
+  // Hyperlocal Data (Where to pick it up)
+  latitude      Float?
+  longitude     Float?
+  pickupAddress String?
+
+  // Relations
+  brandId    String?
+  categoryId String
+  ownerId    String // The peer lending the item
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete for production safety
+
+  owner        User              @relation("UserListings", fields: [ownerId], references: [id])
+  brand        Brand?            @relation(fields: [brandId], references: [id])
+  category     Category          @relation(fields: [categoryId], references: [id])
+  images       ProductImage[]
+  inventory    InventoryItem[] // Supports multiple units of the same item if needed
+  reviews      Review[]          @relation("ProductReviews")
+  wishlistedBy WishlistItem[]
+  cartItems    CartItem[]
+  orderItems   RentalOrderItem[]
+
+  @@index([ownerId])
+  @@index([categoryId])
+  @@index([slug])
+}
+
+model ProductImage {
+  id        String @id @default(uuid())
+  productId String
+  imageUrl  String
+  sortOrder Int    @default(0)
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+enum Condition {
+  NEW
+  GOOD
+  MINOR_WEAR
+  DAMAGED
+}
+
+enum InventoryStatus {
+  AVAILABLE
+  RENTED
+  AT_CLEANERS
+  MAINTENANCE
+  RETIRED
+}
+
+model InventoryItem {
+  id            String          @id @default(uuid())
+  productId     String
+  barcode       String?         @unique
+  condition     Condition       @default(GOOD)
+  status        InventoryStatus @default(AVAILABLE)
+  location      String?
+  lastCleanedAt DateTime?
+
+  product    Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItems RentalOrderItem[]
+
+  @@index([productId])
+}
+
+// ------------------------------------------------------
+// 3. P2P TRANSACTIONS, ESCROW & PAYMENTS
+// ------------------------------------------------------
+
+enum OrderStatus {
+  PENDING
+  PAYMENT_FAILED
+  CONFIRMED // Payment successful, waiting for pickup/shipping
+  ACTIVE // Item is currently with the borrower
+  RETURN_PENDING // Borrower returned it, waiting for lender approval
+  COMPLETED // Lender confirmed safe return, deposit refunded
+  CANCELLED
+}
+
+model RentalOrder {
+  id         String      @id @default(uuid())
+  borrowerId String
+  status     OrderStatus @default(PENDING)
+
+  // Rental Period
+  startDate DateTime
+  endDate   DateTime
+
+  // Financial Breakdown (Escrow setup)
+  rentalTotal   Float // Amount going to lender
+  platformFee   Float // Amount going to platform
+  depositAmount Float // Held in escrow (refundable)
+  totalPaid     Float // Total charged to borrower at checkout
+
+  // Fulfillment
+  shippingAddressId String? // Null if they are meeting locally
+  trackingNumber    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  borrower        User              @relation("UserOrders", fields: [borrowerId], references: [id])
+  shippingAddress Address?          @relation(fields: [shippingAddressId], references: [id])
+  items           RentalOrderItem[]
+  payment         Payment? // 1-to-1 relation for the main transaction
+
+  @@index([borrowerId])
+  @@index([status])
+}
+
+model RentalOrderItem {
+  id              String   @id @default(uuid())
+  rentalOrderId   String
+  inventoryItemId String?
+  productId       String // Direct link to the listing
+  price           Float // Snapshot of price at time of booking
+  startDate       DateTime
+  endDate         DateTime
+
+  order         RentalOrder    @relation(fields: [rentalOrderId], references: [id], onDelete: Cascade)
+  product       Product        @relation(fields: [productId], references: [id])
+  inventoryItem InventoryItem? @relation(fields: [inventoryItemId], references: [id])
+
+  @@index([rentalOrderId])
+  @@index([productId])
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED // Used when the deposit is returned
+}
+
+model Payment {
+  id            String @id @default(uuid())
+  rentalOrderId String @unique
+  amount        Float
+  currency      String @default("INR")
+
+  // Razorpay Gateway specific fields
+  provider          String  @default("RAZORPAY")
+  razorpayOrderId   String? @unique
+  razorpayPaymentId String? @unique
+  razorpaySignature String?
+
+  status         PaymentStatus @default(PENDING)
+  paymentDetails Json? // Store raw webhook data
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order RentalOrder @relation(fields: [rentalOrderId], references: [id], onDelete: Cascade)
+}
+
+enum PayoutStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+model Payout {
+  id          String       @id @default(uuid())
+  lenderId    String
+  amount      Float
+  status      PayoutStatus @default(PENDING)
+  processedAt DateTime?
+
+  user User @relation(fields: [lenderId], references: [id])
+
+  @@index([lenderId])
+}
+
+// ------------------------------------------------------
+// 4. FEEDBACK & REPUTATION (2-WAY REVIEWS)
+// ------------------------------------------------------
+
+model Review {
+  id          String   @id @default(uuid())
+  authorId    String
+  recipientId String? // Can review the user directly (Lender/Borrower reliability)
+  productId   String? // Or review the specific item (Quality)
+  rating      Int
+  comment     String?
+  createdAt   DateTime @default(now())
+
+  author    User          @relation("ReviewsGiven", fields: [authorId], references: [id], onDelete: Cascade)
+  recipient User?         @relation("ReviewsReceived", fields: [recipientId], references: [id], onDelete: Cascade)
+  product   Product?      @relation("ProductReviews", fields: [productId], references: [id], onDelete: Cascade)
+  images    ReviewImage[]
+
+  @@index([authorId])
+  @@index([recipientId])
+  @@index([productId])
+}
+
+model ReviewImage {
+  id       String @id @default(uuid())
+  reviewId String
+  imageUrl String
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+}
+
+// ------------------------------------------------------
+// 5. CART, WISHLIST, NOTIFICATIONS
+// ------------------------------------------------------
+
+model WishlistItem {
+  id        String   @id @default(uuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
+model Cart {
+  id     String @id @default(uuid())
+  userId String @unique
+
+  user  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items CartItem[]
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  productId String
+  startDate DateTime
+  endDate   DateTime
+
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([cartId])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String // e.g., "ORDER_CONFIRMED", "RETURN_REMINDER", "DEPOSIT_REFUNDED"
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
