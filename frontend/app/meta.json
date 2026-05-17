@@ -1,0 +1,37 @@
+{
+  "title": "Exxo - P2P Rental Marketplace for Neighbors",
+  "description": "Exxo is India's premium P2P rental platform. Rent cameras, gadgets, fashion, and trekking gear from your neighbors.",
+  "applicationName": "Exxo",
+  "authors": [{ "name": "Exxo Team", "url": "https://exxo.in" }],
+  "generator": "Next.js",
+  "keywords": [
+    "rentals India",
+    "P2P rental",
+    "neighborhood sharing",
+    "rent cameras",
+    "rent gadgets",
+    "sharing economy"
+  ],
+  "themeColor": "#000000",
+  "viewport": "width=device-width, initial-scale=1",
+  "robots": "index, follow",
+  "og": {
+    "type": "website",
+    "locale": "en_IN",
+    "url": "https://exxo.in",
+    "siteName": "Exxo",
+    "images": [
+      {
+        "url": "https://exxo.in/og-image.jpg",
+        "width": 1200,
+        "height": 630,
+        "alt": "Exxo - Sharing is the new owning"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "site": "@exxo_india",
+    "creator": "@exxo_india"
+  }
+}
