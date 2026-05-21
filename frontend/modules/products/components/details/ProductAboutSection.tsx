@@ -35,8 +35,7 @@ export function ProductAboutSection({ product }: ProductAboutSectionProps) {
         {expanded ? description : previewText}
       </p>
 
-      {/* Real specs from DB — shown when expanded */}
-      {expanded && hasSpecs && (
+      {/* {expanded && hasSpecs && (
         <ul className="space-y-1.5 mt-1">
           {specs.map((spec) => (
             <li
@@ -49,7 +48,7 @@ export function ProductAboutSection({ product }: ProductAboutSectionProps) {
             </li>
           ))}
         </ul>
-      )}
+      )} */}
 
       {(isTruncated || hasSpecs) && (
         <Button
@@ -59,9 +58,13 @@ export function ProductAboutSection({ product }: ProductAboutSectionProps) {
           className="h-auto p-0 text-xs font-bold text-blue-600 hover:text-blue-700 hover:bg-transparent gap-1"
         >
           {expanded ? (
-            <>Show less <ChevronUp className="h-3.5 w-3.5" /></>
+            <>
+              Show less <ChevronUp className="h-3.5 w-3.5" />
+            </>
           ) : (
-            <>Show more <ChevronDown className="h-3.5 w-3.5" /></>
+            <>
+              Show more <ChevronDown className="h-3.5 w-3.5" />
+            </>
           )}
         </Button>
       )}

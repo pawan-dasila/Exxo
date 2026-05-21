@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Menu, X, ShoppingBag, Bell, PlusCircle, Info } from "lucide-react";
+import { Menu, X, ShoppingBag, PlusCircle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUI } from "@/components/context/UIContext";
 
@@ -32,7 +32,8 @@ export function NavbarActions({
   return (
     <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
       <Link
-        href="/how-it-works"
+        // href="/how-it-works"
+        href="/"
         className="text-xs font-bold text-stone-600 hover:text-stone-900 transition-colors whitespace-nowrap hidden lg:inline-flex items-center"
       >
         Become a Lender
@@ -55,16 +56,6 @@ export function NavbarActions({
       >
         <ShoppingBag className="w-5 h-5" aria-hidden="true" />
       </Button>
-
-      <button
-        aria-label="Notifications"
-        className="w-10 h-10 rounded-full hover:bg-stone-100 hidden sm:flex items-center justify-center relative cursor-pointer text-stone-600 hover:text-stone-800 transition-colors"
-      >
-        <Bell className="w-5 h-5" />
-        <span className="absolute top-2 right-2 bg-rose-500 text-white text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center">
-          3
-        </span>
-      </button>
 
       <UserProfile />
 

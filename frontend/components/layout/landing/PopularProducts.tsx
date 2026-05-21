@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowRight, TrendingUp } from "lucide-react";
 import { getProductsAction } from "@/modules/products/actions";
 import { Product } from "@/modules/products/types";
 import { ProductCard } from "@/modules/products/components/ProductCard";
@@ -58,8 +58,7 @@ export default function PopularProducts() {
               <span>MOST POPULAR NOW</span>
             </div>
             <h2 className="text-[28px] md:text-[32px] font-extrabold text-zinc-900 tracking-tight flex items-center gap-2">
-              Popular in Bangalore
-              <Sparkles className="w-6 h-6 text-yellow-500 fill-yellow-400 animate-pulse hidden md:inline-block" />
+              Popular Products
             </h2>
             <p className="text-zinc-500 text-[14px] md:text-[15px] mt-1 max-w-xl">
               High demand rental pieces, top-rated by our trust community.

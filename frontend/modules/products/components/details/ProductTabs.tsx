@@ -30,17 +30,17 @@ export function ProductTabs({ product }: ProductTabsProps) {
   ];
 
   // Build spec rows from DB specifications JSON
-  const specRows: [string, string][] = [
-    ["Brand", product.brand?.name ?? "—"],
-    ["Category", product.category?.name ?? "—"],
-    ["Condition", product.condition ?? "Good"],
-    ...(product.color ? [["Colour", product.color] as [string, string]] : []),
-    ...(product.size ? [["Size", product.size] as [string, string]] : []),
-    ["Pickup", product.pickupAddress ?? "Contact lender"],
-    ...((product.specifications?.specs ?? [])
-      .slice(0, 4)
-      .map((s) => [s.label, s.value] as [string, string])),
-  ];
+  // const specRows: [string, string][] = [
+  //   ["Brand", product.brand?.name ?? "—"],
+  //   ["Category", product.category?.name ?? "—"],
+  //   ["Condition", product.condition ?? "Good"],
+  //   ...(product.color ? [["Colour", product.color] as [string, string]] : []),
+  //   ...(product.size ? [["Size", product.size] as [string, string]] : []),
+  //   ["Pickup", product.pickupAddress ?? "Contact lender"],
+  //   ...(product.specifications?.specs ?? [])
+  //     .slice(0, 4)
+  //     .map((s) => [s.label, s.value] as [string, string]),
+  // ];
 
   return (
     <div className="bg-white rounded-3xl border border-neutral-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] overflow-hidden">
@@ -68,26 +68,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
         <div className="p-6">
           {/* DETAILS */}
           {activeTab === "details" && (
-            <div className="grid grid-cols-1 sm:grid-cols-[0.9fr_1.1fr] gap-8">
-              {/* Spec table from real data */}
-              <div className="space-y-4">
-                <h4 className="text-xs uppercase font-extrabold text-neutral-900 tracking-wider">
-                  Item Details
-                </h4>
-                <dl className="grid grid-cols-2 gap-y-3 gap-x-2 text-xs">
-                  {specRows.map(([dt, dd]) => (
-                    <React.Fragment key={dt}>
-                      <dt className="text-neutral-400 font-semibold capitalize truncate">
-                        {dt}
-                      </dt>
-                      <dd className="text-neutral-800 font-semibold truncate">
-                        {dd}
-                      </dd>
-                    </React.Fragment>
-                  ))}
-                </dl>
-              </div>
-
+            <>
               {/* Description + full specs */}
               <div className="space-y-5">
                 <div className="space-y-2">
@@ -109,7 +90,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
                       {(product.specifications?.specs ?? []).map((spec) => (
                         <li key={spec.label} className="flex items-start gap-2">
                           <Check className="h-3.5 w-3.5 text-emerald-500 stroke-[3px] shrink-0 mt-0.5" />
-                          <span className="text-neutral-400 min-w-[80px]">
+                          <span className="text-neutral-400 min-w-20">
                             {spec.label}:
                           </span>
                           <span>{spec.value}</span>
@@ -119,7 +100,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
                   </div>
                 )}
               </div>
-            </div>
+            </>
           )}
 
           {/* REVIEWS (full panel when tab active) */}
@@ -228,7 +209,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 
         {/* ═══ RIGHT: Reviews panel — always visible except when reviews tab is active ═══ */}
         {activeTab !== "reviews" && (
-          <div className="p-6 max-h-[520px] overflow-y-auto">
+          <div className="p-6 max-h-130 overflow-y-auto">
             <ReviewsContent
               reviews={reviews}
               avgRating={product.avgRating}

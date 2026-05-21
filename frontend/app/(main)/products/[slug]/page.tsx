@@ -75,7 +75,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     queryFn: () => getTrendingProductsAction(),
   });
 
-  const [product, trendingProducts] = await Promise.all([
+  const [product] = await Promise.all([
     productPromise,
     trendingProductsPromise,
   ]);
