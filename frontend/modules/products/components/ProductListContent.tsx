@@ -153,9 +153,7 @@ export const ProductListContent: React.FC<ProductListContentProps> = ({
     // 3. Size filtering
     if (selectedSize) {
       const sizeLower = selectedSize.toLowerCase();
-      result = result.filter(
-        (p) => p.size?.toLowerCase() === sizeLower,
-      );
+      result = result.filter((p) => p.size?.toLowerCase() === sizeLower);
     }
 
     // 4. Price filtering
@@ -230,7 +228,7 @@ export const ProductListContent: React.FC<ProductListContentProps> = ({
           <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
             {breadcrumbPage && (
               <Breadcrumb className="mb-3.5">
-                <BreadcrumbList className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-400">
+                <BreadcrumbList className="text-xs font-extrabold uppercase  text-zinc-400">
                   <BreadcrumbItem>
                     <BreadcrumbLink
                       href="/"
@@ -258,12 +256,12 @@ export const ProductListContent: React.FC<ProductListContentProps> = ({
               </Breadcrumb>
             )}
             {title && (
-              <h2 className="text-2xl md:text-3xl font-black text-zinc-900 tracking-tight leading-none mb-2 font-sans">
+              <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 leading-none mb-2 font-sans">
                 {title}
               </h2>
             )}
             {searchQuery && !title && (
-              <h2 className="text-2xl md:text-3xl font-black text-zinc-900 tracking-tight leading-none mb-2 font-sans">
+              <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 leading-none mb-2 font-sans">
                 Search Results for &ldquo;{searchQuery}&rdquo;
               </h2>
             )}

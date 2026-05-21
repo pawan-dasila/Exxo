@@ -14,13 +14,13 @@ interface Props {
   searchParams: Promise<{ drop?: string; q?: string; category?: string }>;
 }
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  const { drop, q, category } = await searchParams;
+export async function generateMetadata({
+  searchParams,
+}: Props): Promise<Metadata> {
+  const { q, category } = await searchParams;
 
   const title = q
     ? `Search results for "${q}" — Exxo`
-    : drop
-    ? `Shop ${drop} — Limited Premium Gear | Exxo`
     : "Shop All Collections — Premium P2P Rental Catalog | Exxo";
 
   const description =
@@ -30,7 +30,12 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     title,
     description,
     robots: q || category ? { index: false, follow: true } : undefined,
-    openGraph: { title, description, url: "https://www.exxo.co/products", type: "website" },
+    openGraph: {
+      title,
+      description,
+      url: "https://www.exxo.co/products",
+      type: "website",
+    },
     twitter: { card: "summary_large_image", title, description },
   };
 }
@@ -39,12 +44,10 @@ import { Suspense } from "react";
 import Loading from "./loading";
 
 export default async function ProductListPage({ searchParams }: Props) {
-  const { drop, q, category } = await searchParams;
+  const { q, category } = await searchParams;
   const queryClient = new QueryClient();
 
   const options = {
-    dropSlug: drop && drop !== "active" ? drop : undefined,
-    activeDropOnly: drop === "active",
     search: q?.trim() || undefined,
     category: category?.trim() || undefined,
   };
@@ -55,13 +58,15 @@ export default async function ProductListPage({ searchParams }: Props) {
       queryKey: ["products", options],
       queryFn: () => getProductsAction(options),
     }),
-    queryClient.fetchQuery({
-      queryKey: ["categories"],
-      queryFn: () => categoryApi.getAll(),
-    }).catch((err) => {
-      console.error("Failed to prefetch categories in page.tsx", err);
-      return [];
-    }),
+    queryClient
+      .fetchQuery({
+        queryKey: ["categories"],
+        queryFn: () => categoryApi.getAll(),
+      })
+      .catch((err) => {
+        console.error("Failed to prefetch categories in page.tsx", err);
+        return [];
+      }),
   ]);
 
   return (
@@ -79,4 +84,3 @@ export default async function ProductListPage({ searchParams }: Props) {
     </HydrationBoundary>
   );
 }
-
