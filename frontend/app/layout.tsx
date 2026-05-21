@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Newsreader } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
@@ -10,11 +10,6 @@ import QueryClientProviderWrapper from "@/components/provider/query-client-provi
 import { Providers } from "@/components/provider/Providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  style: "italic",
-  variable: "--font-heading",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -91,7 +86,6 @@ export default function RootLayout({
       className={cn(
         "h-full antialiased font-sans",
         inter.variable,
-        newsreader.variable,
       )}
       suppressHydrationWarning
     >
@@ -111,7 +105,7 @@ export default function RootLayout({
         >
           Skip to main content
         </Link>
-        <Toaster />
+        <Toaster richColors />
         <QueryClientProviderWrapper>
           <Providers>{children}</Providers>
         </QueryClientProviderWrapper>

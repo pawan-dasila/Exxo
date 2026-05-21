@@ -25,6 +25,21 @@ import {
 import Image from "next/image";
 // import { Category } from "@/modules/category/types";
 
+interface SuggestionProduct {
+  id: string;
+  slug: string;
+  image_url: string;
+  title: string;
+  formatted_price: string;
+}
+
+interface SuggestionCategory {
+  id: string;
+  name: string;
+  slug: string;
+  image_url?: string | null;
+}
+
 export function NavbarSearch() {
   const [query, setQuery] = useState("");
   const [desktopOpen, setDesktopOpen] = useState(false);
@@ -32,7 +47,10 @@ export function NavbarSearch() {
   const router = useRouter();
   // const { data: suggestions, isLoading } = useSearchSuggestions(query);
   const isLoading = false;
-  const suggestions = {
+  const suggestions: {
+    products: SuggestionProduct[];
+    categories: SuggestionCategory[];
+  } = {
     products: [],
     categories: [],
   };
@@ -113,7 +131,7 @@ export function NavbarSearch() {
               </span>
             }
           >
-            {suggestions.categories.map((category: Category) => (
+            {suggestions.categories.map((category: SuggestionCategory) => (
               <CommandItem
                 key={category.id}
                 onSelect={() => handleSelectCategory(category.name || "")}

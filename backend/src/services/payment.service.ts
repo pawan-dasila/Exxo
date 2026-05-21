@@ -1,10 +1,19 @@
 import crypto from "crypto";
 import { Env } from "../configs/env.config";
 import prisma from "../lib/prisma";
-import { AppError } from "../utils/AppError";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { ErrorCodeEnum } from "../enums/error-code.enum";
 import logger from "../utils/logger";
+
+interface RazorpayWebhookPayload {
+  payment: {
+    entity: {
+      order_id: string;
+      id: string;
+      amount: number;
+      currency: string;
+      status: string;
+    };
+  };
+}
 
 export class PaymentService {
   /**
@@ -22,18 +31,22 @@ export class PaymentService {
   /**
    * Handles payment success event.
    */
-  public static async handlePaymentSuccess(payload: any) {
+  public static async handlePaymentSuccess(
+    payload: RazorpayWebhookPayload,
+  ): Promise<void> {
     const { order_id: rzpOrderId, id: rzpPaymentId } = payload.payment.entity;
 
     // Use a transaction to ensure atomic updates
-    return await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx) => {
       // 1. Find the payment record
       const payment = await tx.payment.findUnique({
         where: { razorpayOrderId: rzpOrderId },
       });
 
       if (!payment) {
-        logger.error(`Payment record not found for Razorpay Order ID: ${rzpOrderId}`);
+        logger.error(
+          `Payment record not found for Razorpay Order ID: ${rzpOrderId}`,
+        );
         return;
       }
 
@@ -52,21 +65,40 @@ export class PaymentService {
       });
 
       // 3. Update RentalOrder status to CONFIRMED
-      await tx.rentalOrder.update({
+      const updatedOrder = await tx.rentalOrder.update({
         where: { id: payment.rentalOrderId },
         data: {
           status: "CONFIRMED",
         },
+        include: {
+          items: true,
+        },
       });
 
-      logger.info(`Order ${payment.rentalOrderId} confirmed via payment ${rzpPaymentId}`);
+      // 4. Record blocked dates in ProductAvailability automatically
+      for (const item of updatedOrder.items) {
+        await tx.productAvailability.create({
+          data: {
+            productId: item.productId,
+            startDate: updatedOrder.startDate,
+            endDate: updatedOrder.endDate,
+            isBlocked: true,
+          },
+        });
+      }
+
+      logger.info(
+        `Order ${payment.rentalOrderId} confirmed and dates blocked via payment ${rzpPaymentId}`,
+      );
     });
   }
 
   /**
    * Handles payment failure event.
    */
-  public static async handlePaymentFailure(payload: any) {
+  public static async handlePaymentFailure(
+    payload: RazorpayWebhookPayload,
+  ): Promise<void> {
     const { order_id: rzpOrderId } = payload.payment.entity;
 
     await prisma.payment.update({

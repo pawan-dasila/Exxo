@@ -1,11 +1,24 @@
 export const siteConfig = {
   name: "EXXO",
   description:
-    "India's first peer-to-peer item sharing platform. Borrow cameras, gadgets, clothes, trekking gear and more from verified neighbors near you. Save money, reduce waste, build community.",
-  tagline: "Before You Buy, Check if You Can Borrow.",
+    "EXXO helps people borrow things from nearby trusted users instead of buying them — from cameras and gadgets to fashion and outdoor gear.",
+  tagline: "Borrow Anything Nearby.",
   url: "https://exxo.in",
   ogImage: "https://exxo.in/og-image.png",
   logo: "/svg/logo.svg",
+
+  business: {
+    tradeName: "EXXO",
+    legalName: "EXXO Peer-to-Peer Rentals Private Limited",
+    address: {
+      full: "Bengaluru, Karnataka, India",
+      building: "EXXO Spaces",
+      street: "80 Feet Road, Koramangala",
+      district: "Bengaluru Urban",
+      city: "Bengaluru",
+      pin: "560034",
+    },
+  },
 
   socials: {
     instagram: "https://instagram.com/exxo.in",
@@ -21,15 +34,15 @@ export const siteConfig = {
 
   keywords: [
     "EXXO",
-    "peer to peer sharing India",
-    "rent cameras Bangalore",
-    "borrow gadgets near me",
-    "circular economy India",
-    "sharing economy platform India",
-    "rent clothes online India",
-    "borrow trekking gear Bangalore",
-    "item sharing app India",
-    "neighbors sharing platform",
+    "borrow items near you",
+    "rent from neighbors",
+    "peer to peer rentals",
+    "sharing economy India",
+    "camera rentals",
+    "borrow gadgets",
+    "trekking gear rental",
+    "fashion rentals",
+    "community sharing app",
   ],
 
   seo: {

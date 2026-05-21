@@ -1,10 +1,12 @@
-import { getCurrentUserWithProfileAction } from "@/modules/users/actions";
-import { getAddressesAction } from "@/modules/checkout/actions";
-import { ProfileForm } from "@/modules/users/components/ProfileForm";
-import { AddressManager } from "@/modules/checkout/components/AddressManager";
+import {
+  getCurrentUserWithProfileAction,
+  getAddressesAction,
+} from "@/modules/user/actions/action";
+import { ProfileForm } from "@/modules/user/components/ProfileForm";
+import { AddressManager } from "@/modules/user/components/AddressManager";
 import { Separator } from "@/components/ui/separator";
 
-import { UserWithProfile } from "@/modules/users/types";
+import { UserWithProfile } from "@/modules/user/types";
 
 export const metadata = {
   title: "Personal Settings",

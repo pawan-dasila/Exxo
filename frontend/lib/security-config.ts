@@ -51,7 +51,7 @@ export const SECURITY_CONFIG = {
       value: [
         "default-src 'self';",
         "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://cdn.razorpay.com https://www.googletagmanager.com https://www.google.com https://www.gstatic.com;",
-        "connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com https://*.supabase.co https://*.analytics.google.com https://api.cloudinary.com;",
+        "connect-src 'self' http://localhost:8000 https://api.razorpay.com https://lumberjack.razorpay.com https://*.supabase.co https://*.analytics.google.com https://api.cloudinary.com;",
         "frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com https://www.youtube-nocookie.com https://www.google.com;",
         "img-src 'self' blob: data: https://res.cloudinary.com https://*.google-analytics.com;",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",

@@ -82,4 +82,44 @@ export class ProductController {
       });
     },
   );
+
+  public static clickProduct = AsyncHandler(
+    async (req: Request, res: Response) => {
+      const product = await ProductService.clickProduct(
+        req.params.id as string,
+      );
+      return ApiResponse(res, {
+        status_code: HTTPSTATUS.OK,
+        message: "Click tracked successfully",
+        data: { clickCount: product.clickCount },
+      });
+    },
+  );
+
+  public static saveSearch = AsyncHandler(
+    async (req: Request, res: Response) => {
+      const { query, filters } = req.body;
+      const savedSearch = await ProductService.saveSearch(
+        req.user!.userId,
+        query as string,
+        filters as Record<string, string | number | boolean | undefined | null>,
+      );
+      return ApiResponse(res, {
+        status_code: HTTPSTATUS.CREATED,
+        message: "Search saved successfully",
+        data: savedSearch,
+      });
+    },
+  );
+
+  public static getSavedSearches = AsyncHandler(
+    async (req: Request, res: Response) => {
+      const searches = await ProductService.getSavedSearches(req.user!.userId);
+      return ApiResponse(res, {
+        status_code: HTTPSTATUS.OK,
+        message: "Saved searches retrieved successfully",
+        data: searches,
+      });
+    },
+  );
 }

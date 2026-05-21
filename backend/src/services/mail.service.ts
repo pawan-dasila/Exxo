@@ -18,12 +18,12 @@ export class MailService {
         <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background-color: #fafafa;">
           <div style="background-color: #ffffff; border-radius: 12px; padding: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
             <h1 style="color: #111827; margin: 0 0 8px 0; font-size: 24px;">Verify Your Email</h1>
-            <p style="color: #6b7280; font-size: 14px; margin: 0 0 24px 0;">Luxe Rental</p>
+            <p style="color: #6b7280; font-size: 14px; margin: 0 0 24px 0;">EXXO</p>
             <p style="color: #374151; font-size: 16px; line-height: 1.6;">
               ${greeting}
             </p>
             <p style="color: #374151; font-size: 16px; line-height: 1.6;">
-              Thank you for signing up for <strong>Luxe Rental</strong>! To complete your registration
+              Thank you for signing up for <strong>EXXO</strong>! To complete your registration
               and unlock all features, please verify your email address by clicking the button below.
             </p>
             <div style="margin: 32px 0; text-align: center;">
@@ -47,7 +47,7 @@ export class MailService {
       const { data, error } = await this.resend.emails.send({
         from: Env.RESEND_MAILER_SENDER,
         to: [to],
-        subject: "Verify your email - Luxe Rental",
+        subject: "Verify your email - EXXO",
         html,
       });
 
@@ -76,12 +76,12 @@ export class MailService {
         <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background-color: #fafafa;">
           <div style="background-color: #ffffff; border-radius: 12px; padding: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
             <h1 style="color: #111827; margin: 0 0 8px 0; font-size: 24px;">Reset Your Password</h1>
-            <p style="color: #6b7280; font-size: 14px; margin: 0 0 24px 0;">Luxe Rental</p>
+            <p style="color: #6b7280; font-size: 14px; margin: 0 0 24px 0;">EXXO</p>
             <p style="color: #374151; font-size: 16px; line-height: 1.6;">
               ${greeting}
             </p>
             <p style="color: #374151; font-size: 16px; line-height: 1.6;">
-              We received a request to reset your password for your <strong>Luxe Rental</strong> account. 
+              We received a request to reset your password for your <strong>EXXO</strong> account. 
               Click the button below to choose a new password.
             </p>
             <div style="margin: 32px 0; text-align: center;">
@@ -105,7 +105,7 @@ export class MailService {
       const { data, error } = await this.resend.emails.send({
         from: Env.RESEND_MAILER_SENDER,
         to: [to],
-        subject: "Reset your password - Luxe Rental",
+        subject: "Reset your password - EXXO",
         html,
       });
 

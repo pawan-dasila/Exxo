@@ -1,18 +1,24 @@
 "use client";
 
-import { useState, memo, useCallback } from "react";
-import { Menu, X, Sparkles, ShoppingBag, LucideIcon } from "lucide-react";
+import React, { useState, memo, useCallback, useEffect } from "react";
+import {
+  Menu,
+  X,
+  ShoppingBag,
+  Search,
+  MapPin,
+  ChevronDown,
+  PlusCircle,
+  Bell,
+  Info,
+} from "lucide-react";
 import Link from "next/link";
-// import { useCartItems } from "@/modules/cart/hooks";
 import { Button } from "@/components/ui/button";
 import dynamic from "next/dynamic";
-import { BrandLogo } from "@/components/layout/shared/BrandLogo";
-import { NavbarSearch } from "./NavbarSearch";
-import * as Icons from "lucide-react";
-
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { siteConfig } from "@/lib/config/site";
 import { useUI } from "@/components/context/UIContext";
+import { BrandLogo } from "@/components/layout/shared/BrandLogo";
 
 const UserProfile = dynamic(
   () =>
@@ -29,12 +35,23 @@ const UserProfile = dynamic(
 
 export const Navbar = memo(function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { openCart } = useUI();
-  // const { data: cartItems = [] } = useCartItems();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [location, setLocation] = useState("Koramangala, Bangalore");
 
-  // const itemCount = cartItems.length;
   const itemCount = 3;
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get("q") || "";
+      const loc = params.get("location") || "Koramangala, Bangalore";
+      setSearchQuery(q);
+      setLocation(loc);
+    }
+  }, [pathname]);
 
   const toggleMobileMenu = useCallback(
     () => setIsMobileMenuOpen((prev) => !prev),
@@ -42,80 +59,121 @@ export const Navbar = memo(function Navbar() {
   );
   const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
 
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) {
+      params.set("q", searchQuery.trim());
+    }
+    if (location.trim() && location !== "Koramangala, Bangalore") {
+      params.set("location", location.trim());
+    }
+    const queryString = params.toString();
+    router.push(`/products${queryString ? `?${queryString}` : ""}`);
+  };
+
   return (
     <header
       data-nosnippet
       className="relative z-50 transition-all duration-300 w-full bg-white border-b border-border/50"
     >
-      <div className="max-w-none w-full px-3 sm:px-6 lg:px-8 flex items-center justify-between">
-        <nav className="hidden md:flex items-center gap-8 flex-1">
-          {siteConfig.navigation.main.map((item) => {
-            const IconComponent =
-              (Icons[item.icon as keyof typeof Icons] as LucideIcon) ||
-              Icons.Sparkles;
-
-            const isActive =
-              pathname === item.href || pathname.startsWith(`${item.href}/`);
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-label={item.ariaLabel}
-                className={`group relative flex items-center gap-1.5 text-[12px] font-bold uppercase transition-all duration-300 whitespace-nowrap ${isActive ? "text-foreground" : "text-foreground/80 hover:text-foreground"}`}
-              >
-                <IconComponent
-                  className={`w-3.5 h-3.5 stroke-[1.2] transition-colors ${isActive ? "text-brand-gold" : "group-hover:text-brand-gold"}`}
-                />
-                <span>{item.name}</span>
-                <span
-                  className={`absolute -bottom-1 left-0 h-0.5 bg-brand-gold transition-all ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
-                />
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="flex-1 flex justify-start md:justify-center">
+      <div className="max-w-none w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between h-[72px] gap-4">
+        <div className="flex items-center gap-2 shrink-0">
           <Link
             href="/"
             aria-label={`${siteConfig.name} - Return to Homepage`}
             className="group flex items-center transition-all hover:scale-[1.02] active:scale-95 duration-300"
           >
-            <BrandLogo size="md" className="md:hidden" />
-            <BrandLogo size="lg" className="hidden md:flex" />
+            <BrandLogo size="md" />
           </Link>
         </div>
 
-        {/* Right Section: Actions */}
-        <div className="flex items-center justify-end gap-1 md:gap-2 flex-1">
-          {/* <NavbarSearch /> */}
-          <UserProfile />
+        <div className="hidden md:flex flex-1 max-w-2xl">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="w-full flex items-center bg-[#f4f5f8] border border-transparent focus-within:border-stone-200 focus-within:bg-white focus-within:shadow-md rounded-full px-4 py-2 transition-all duration-200 gap-2"
+          >
+            <div className="flex-1 flex items-center gap-2.5 min-w-0">
+              <Search className="text-stone-400 shrink-0 w-4 h-4" />
+              <input
+                type="text"
+                placeholder="Search for items (e.g. Camera, Laptop, Tent...)"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-transparent border-none outline-none focus:outline-none focus:ring-0 p-0 text-[13px] text-stone-800 placeholder:text-stone-400/80 w-full min-w-0"
+              />
+            </div>
+
+            <div className="w-px h-5 bg-stone-300 shrink-0" />
+
+            <div className="flex items-center gap-2 shrink-0 min-w-0">
+              <MapPin className="text-stone-500 shrink-0 w-4 h-4" />
+              <input
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Location"
+                className="bg-transparent border-none outline-none focus:outline-none focus:ring-0 p-0 text-xs font-semibold text-stone-700 placeholder:text-stone-400/80 w-[140px] truncate"
+              />
+              <span className="bg-stone-200/60 px-2 py-0.5 rounded-full text-[10px] font-bold text-stone-600 shrink-0 select-none">
+                5 km
+              </span>
+              <ChevronDown className="text-stone-400 w-3.5 h-3.5 shrink-0 ml-0.5" />
+            </div>
+          </form>
+        </div>
+
+        <div className="flex items-center justify-end gap-2 sm:gap-3 shrink-0">
+          <Link
+            href="/how-it-works"
+            className="text-xs font-bold text-stone-600 hover:text-stone-900 transition-colors whitespace-nowrap hidden lg:inline-flex items-center"
+          >
+            Become a Lender
+          </Link>
+
+          <Link
+            href="/products?create=true"
+            className="bg-[#0b1b3d] hover:bg-[#152e61] active:scale-[0.98] text-white px-5 py-2.5 rounded-full text-[12px] font-bold tracking-wide transition-all shadow-sm hidden sm:flex items-center gap-1.5 whitespace-nowrap"
+          >
+            <PlusCircle className="w-4 h-4 shrink-0" />
+            <span>List Your Item</span>
+          </Link>
+
           <Button
             variant="ghost"
             size="icon"
             onClick={openCart}
             aria-label="Open shopping bag"
-            className="rounded-full hover:bg-brand-gold hover:text-white transition-all relative outline-offset-2"
+            className="rounded-full cursor-pointer transition-all relative w-10 h-10 text-stone-600 hover:text-stone-800 hover:bg-stone-100"
           >
-            <ShoppingBag
-              className="w-6 h-6 md:w-9 md:h-9 stroke-[1.5]"
-              aria-hidden="true"
-            />
+            <ShoppingBag className="w-5 h-5" aria-hidden="true" />
             {itemCount > 0 && (
               <span
                 aria-live="polite"
                 aria-atomic="true"
-                className="absolute top-2 right-2.5 bg-emerald-500 w-2.5 h-2.5 rounded-full border-2 border-white"
+                className="absolute top-2 right-2 bg-emerald-500 w-2 h-2 rounded-full border border-white"
               >
                 <span className="sr-only">{itemCount} items in bag</span>
               </span>
             )}
           </Button>
+
+          <button
+            aria-label="Notifications"
+            className="w-10 h-10 rounded-full hover:bg-stone-100 flex items-center justify-center relative cursor-pointer text-stone-600 hover:text-stone-800 transition-colors"
+          >
+            <Bell className="w-5 h-5" />
+            <span className="absolute top-2 right-2 bg-rose-500 text-white text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center">
+              3
+            </span>
+          </button>
+
+          <UserProfile />
+
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden rounded-full hover:bg-brand-gold hover:text-white transition-all outline-offset-2"
+            className="md:hidden rounded-full hover:bg-stone-100 transition-all w-10 h-10 shrink-0"
             onClick={toggleMobileMenu}
             aria-label={
               isMobileMenuOpen
@@ -126,7 +184,7 @@ export const Navbar = memo(function Navbar() {
             aria-haspopup="true"
           >
             {isMobileMenuOpen ? (
-              <X className="w-6 h-6 stroke-[1.5]" aria-hidden="true" />
+              <X className="w-5 h-5 stroke-[1.5]" aria-hidden="true" />
             ) : (
               <Menu className="w-5 h-5 stroke-[1.5]" aria-hidden="true" />
             )}
@@ -134,62 +192,67 @@ export const Navbar = memo(function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Expansion */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-background border-b border-border overflow-hidden">
-          <div className="px-6 py-10 flex flex-col gap-8">
-            <div aria-hidden="true" className="flex flex-col gap-6">
-              <Link
-                href="/"
-                onClick={closeMobileMenu}
-                className="text-2xl font-serif flex items-center gap-4 text-left uppercase group w-fit"
-              >
-                <Icons.Home
-                  className={`w-6 h-6 stroke-[1.2] transition-colors ${pathname === "/" ? "text-brand-gold" : "text-stone-400 group-hover:text-brand-gold"}`}
+        <div className="md:hidden bg-white border-b border-border overflow-hidden absolute top-full left-0 w-full shadow-lg z-50">
+          <div className="px-5 py-6 flex flex-col gap-6">
+            <form onSubmit={handleSearchSubmit} className="flex flex-col gap-3">
+              <div className="flex items-center bg-[#f4f5f8] border border-transparent focus-within:border-stone-200 focus-within:bg-white rounded-xl px-4 py-2.5 gap-2">
+                <Search className="text-stone-400 shrink-0 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-transparent border-none outline-none focus:outline-none focus:ring-0 p-0 text-sm text-stone-800 placeholder:text-stone-400 w-full"
                 />
-                <span className="relative">
-                  Home
-                  <span
-                    className={`absolute -bottom-1 left-0 h-0.5 bg-brand-gold transition-all ${pathname === "/" ? "w-full" : "w-0 group-hover:w-full"}`}
-                  />
+              </div>
+
+              <div className="flex items-center bg-[#f4f5f8] border border-transparent focus-within:border-stone-200 focus-within:bg-white rounded-xl px-4 py-2.5 gap-2">
+                <MapPin className="text-stone-500 shrink-0 w-4 h-4" />
+                <input
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="Location"
+                  className="bg-transparent border-none outline-none focus:outline-none focus:ring-0 p-0 text-sm font-semibold text-stone-700 placeholder:text-stone-400 w-full"
+                />
+                <span className="bg-stone-200/60 px-2 py-0.5 rounded-full text-[10px] font-bold text-stone-600 shrink-0">
+                  5 km
                 </span>
-              </Link>
-              {siteConfig.navigation.main.map((item) => {
-                const IconComponent =
-                  (Icons[item.icon as keyof typeof Icons] as LucideIcon) ||
-                  Icons.Sparkles;
+              </div>
 
-                const isActive =
-                  pathname === item.href ||
-                  pathname.startsWith(`${item.href}/`);
-
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={closeMobileMenu}
-                    className="text-2xl font-serif flex items-center gap-4 text-left uppercase group w-fit"
-                  >
-                    <IconComponent
-                      className={`w-6 h-6 stroke-[1.2] transition-colors ${isActive ? "text-brand-gold" : "text-stone-400 group-hover:text-brand-gold"}`}
-                    />
-                    <span className="relative">
-                      {item.name}
-                      <span
-                        className={`absolute -bottom-1 left-0 h-0.5 bg-brand-gold transition-all ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
-                      />
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-            <div className="flex flex-col gap-4 pt-6 border-t border-border">
-              <Link
-                href="/products?filter=new"
-                onClick={closeMobileMenu}
-                className="flex-1 bg-primary text-primary-foreground py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 uppercase"
+              <Button
+                type="submit"
+                className="w-full bg-[#0b1b3d] hover:bg-[#152e61] text-white py-2.5 rounded-xl text-sm font-bold"
               >
-                <Sparkles className="w-4 h-4" /> Drops
+                Search
+              </Button>
+            </form>
+
+            <div className="flex flex-col gap-4 pt-4 border-t border-stone-100">
+              <Link
+                href="/products"
+                onClick={closeMobileMenu}
+                className="text-base font-bold text-stone-800 flex items-center gap-3"
+              >
+                <ShoppingBag className="w-5 h-5 text-stone-500" />
+                Browse Products
+              </Link>
+              <Link
+                href="/how-it-works"
+                onClick={closeMobileMenu}
+                className="text-base font-bold text-stone-800 flex items-center gap-3"
+              >
+                <Info className="w-5 h-5 text-stone-500" />
+                Become a Lender
+              </Link>
+              <Link
+                href="/products?create=true"
+                onClick={closeMobileMenu}
+                className="text-base font-bold text-stone-800 flex items-center gap-3"
+              >
+                <PlusCircle className="w-5 h-5 text-stone-500" />
+                List Your Item
               </Link>
             </div>
           </div>

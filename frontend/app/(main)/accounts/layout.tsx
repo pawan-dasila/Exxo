@@ -1,7 +1,7 @@
 import React from "react";
-import { getCurrentUserWithProfileAction } from "@/modules/users/actions";
+import { getCurrentUserWithProfileAction } from "@/modules/user/actions/action";
 import { redirect } from "next/navigation";
-import { AccountNav } from "@/modules/users/components/AccountNav";
+import { AccountNav } from "@/modules/user/components/AccountNav";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

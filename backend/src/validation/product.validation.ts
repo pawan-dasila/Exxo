@@ -31,6 +31,10 @@ export const productFilterSchema = z.object({
   minPrice: z.coerce.number().optional(),
   maxPrice: z.coerce.number().optional(),
   search: z.string().optional(),
+  page: z.coerce.number().int().positive().optional(),
+  limit: z.coerce.number().int().positive().optional(),
+  popular: z.string().optional(),
+  student: z.string().optional(),
 });
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;

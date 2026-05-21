@@ -14,6 +14,10 @@ export interface User {
   updatedAt: string;
 }
 
+export interface UserWithProfile extends User {
+  full_name: string;
+}
+
 export interface Address {
   id: string;
   userId: string;

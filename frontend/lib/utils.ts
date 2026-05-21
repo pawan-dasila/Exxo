@@ -85,3 +85,30 @@ export const logger = {
     this.private_log("error", `🚨 ${message}`, metadata, options);
   },
 };
+
+export function resolveShowcaseImage(src: string, type: "desktop" | "mobile" = "desktop"): string {
+  if (!src) return "";
+  if (src.includes("res.cloudinary.com")) {
+    const replacement = type === "desktop" ? "q_auto,f_auto,w_800" : "q_auto,f_auto,w_400";
+    return src.replace("/upload/", `/upload/${replacement}/`);
+  }
+  return src;
+}
+
+export function resolveVestrostylesMedia(src: string): string {
+  if (!src) return "";
+  if (src.includes("res.cloudinary.com")) {
+    return src.replace("/upload/", "/upload/q_auto,f_auto/");
+  }
+  return src;
+}
+
+export function formatPrice(price: number | string): string {
+  const numericPrice = typeof price === "string" ? parseFloat(price) : price;
+  if (isNaN(numericPrice)) return "₹0.00";
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  }).format(numericPrice);
+}
+

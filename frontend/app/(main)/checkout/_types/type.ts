@@ -1,6 +1,6 @@
 import * as z from "zod";
 import { UseFormReturn } from "react-hook-form";
-import { CheckoutAddress } from "@/modules/checkout/types";
+// import { CheckoutAddress } from "@/modules/checkout/types";
 
 // --- Razorpay Types ---
 
@@ -87,7 +87,7 @@ export type AddressSelectorValues = z.infer<typeof addressSchema>;
 // --- Component Prop Interfaces ---
 
 export interface AddressSelectorProps {
-  addresses: CheckoutAddress[];
+  // addresses: CheckoutAddress[];
   selectedId: string | null;
   onSelect: (id: string) => void;
   onAddAddress: (values: AddressSelectorValues) => Promise<{
@@ -98,7 +98,7 @@ export interface AddressSelectorProps {
   isLoading?: boolean;
 }
 
-import { CartItem } from "@/modules/cart/types";
+// import { CartItem } from "@/modules/cart/types";
 
 export interface CouponResult {
   id: string;
@@ -109,7 +109,7 @@ export interface CouponResult {
 }
 
 export interface CheckoutSidebarProps {
-  cartItems: CartItem[]; // Using any[] to match existing loosely typed items if needed, or keep CartItem[]
+  // cartItems: CartItem[]; // Using any[] to match existing loosely typed items if needed, or keep CartItem[]
   subtotal: number;
   shippingCost: number;
   discountAmount?: number;

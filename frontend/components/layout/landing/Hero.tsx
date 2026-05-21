@@ -86,7 +86,7 @@ const Hero = () => {
             src="/assets/hero-im.png"
             alt="Rent Anything Nearby"
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
             className="object-contain lg:object-right"
             priority
           />

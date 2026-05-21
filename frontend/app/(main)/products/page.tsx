@@ -5,9 +5,8 @@ import {
 } from "@tanstack/react-query";
 import { ProductListContent } from "@/modules/products/components/ProductListContent";
 import { getProductsAction } from "@/modules/products/actions";
+import { categoryApi } from "@/modules/category/actions";
 import { Metadata } from "next";
-import { createClient } from "@/utils/supabase/server";
-import { dropService } from "@/modules/drops/services/drop-service";
 
 export const revalidate = 3600;
 
@@ -19,17 +18,13 @@ export async function generateMetadata({
   searchParams,
 }: Props): Promise<Metadata> {
   const { drop } = await searchParams;
-  const supabase = await createClient();
-  const activeDrop = await dropService.getActiveDrop(supabase);
 
-  const dropName = drop === "active" ? activeDrop?.title : drop;
-  const title = dropName
-    ? `Shop ${dropName} — Limited Streetwear | Vestrostyles`
-    : "Shop All Collections — Limited Streetwear | Vestrostyles";
+  const title = drop
+    ? `Shop ${drop} — Limited Premium Gear | Exxo`
+    : "Shop All Collections — Premium P2P Rental Catalog | Exxo";
 
-  const description = activeDrop
-    ? `Browse Vestrostyles ${activeDrop.title}. Premium 240 GSM oversized tees, limited quantities. Each piece ships in a collector's box. New Delhi.`
-    : "Browse Vestrostyles premium minimal streetwear. Limited quantities, high-quality wearable art.";
+  const description =
+    "Browse Exxo premium peer-to-peer rental collections. High-quality items on demand.";
 
   return {
     title,
@@ -37,7 +32,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      url: "https://www.vestrostyles.com/products",
+      url: "https://www.exxo.co/products",
       type: "website",
     },
     twitter: {
@@ -48,6 +43,9 @@ export async function generateMetadata({
   };
 }
 
+import { Suspense } from "react";
+import Loading from "./loading";
+
 export default async function ProductListPage({ searchParams }: Props) {
   const { drop } = await searchParams;
   const queryClient = new QueryClient();
@@ -57,14 +55,26 @@ export default async function ProductListPage({ searchParams }: Props) {
     activeDropOnly: drop === "active",
   };
 
-  const products = await queryClient.fetchQuery({
-    queryKey: ["products", options],
-    queryFn: () => getProductsAction(options),
-  });
+  // Prefetch products & categories concurrently
+  const [products, categories] = await Promise.all([
+    queryClient.fetchQuery({
+      queryKey: ["products", options],
+      queryFn: () => getProductsAction(options),
+    }),
+    queryClient.fetchQuery({
+      queryKey: ["categories"],
+      queryFn: () => categoryApi.getAll(),
+    }).catch((err) => {
+      console.error("Failed to prefetch categories in page.tsx", err);
+      return [];
+    }),
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProductListContent initialProducts={products} />
+      <Suspense fallback={<Loading />}>
+        <ProductListContent initialProducts={products} initialCategories={categories} />
+      </Suspense>
     </HydrationBoundary>
   );
 }

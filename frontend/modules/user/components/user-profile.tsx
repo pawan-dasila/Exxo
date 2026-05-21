@@ -38,11 +38,22 @@ export const UserProfile = () => {
     );
   }
 
-  if (!user) return null;
+  if (!user) {
+    return (
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" onClick={() => router.push("/sign-in")}>
+          Log in
+        </Button>
+        <Button onClick={() => router.push("/sign-up")}>
+          Sign up
+        </Button>
+      </div>
+    );
+  }
 
   const handleLogout = () => {
     clearAuth();
-    router.push("/login");
+    router.push("/sign-in");
   };
 
   const initials =
@@ -54,102 +65,65 @@ export const UserProfile = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="relative h-12 w-auto flex items-center gap-3 px-3 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-none transition-all duration-300 group"
-        >
-          <div className="flex h-9 w-9 items-center justify-center overflow-hidden group-hover:border-primary/30 transition-colors duration-300">
+        <Button variant="ghost" className="relative flex items-center gap-2 px-2 h-10 w-auto rounded-md">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted overflow-hidden">
             {user.profileImageUrl ? (
               <Image
                 src={user.profileImageUrl}
                 alt={fullName}
-                width={36}
-                height={36}
-                className="h-full w-full object-cover rounded-full"
+                width={32}
+                height={32}
+                className="h-full w-full object-cover"
               />
             ) : (
-              <span className="text-xs font-bold tracking-widest text-slate-500">
+              <span className="text-xs font-medium text-muted-foreground">
                 {initials}
               </span>
             )}
           </div>
-          <div className="hidden md:flex flex-col items-start gap-1">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-slate-900 dark:text-slate-100 line-clamp-1">
-              {fullName}
-            </span>
-            <span className="text-[10px] font-medium text-slate-400 dark:text-slate-500 tracking-tight line-clamp-1">
-              {user.email}
-            </span>
+          <div className="hidden md:flex flex-col items-start gap-0.5 leading-none">
+            <span className="text-sm font-medium">{fullName}</span>
           </div>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        className="w-64 bg-white dark:bg-slate-950 border-slate-100 dark:border-slate-900 rounded-none shadow-2xl p-2 animate-in fade-in zoom-in-95 duration-200"
-        align="end"
-        sideOffset={8}
-      >
-        <DropdownMenuLabel className="px-5 py-5">
-          <div className="flex flex-col gap-1.5">
+      
+      <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-1">
             <div className="flex items-center gap-2">
-              <p className="text-xs font-bold uppercase tracking-widest text-slate-900 dark:text-slate-50">
-                {fullName}
-              </p>
+              <p className="text-sm font-medium leading-none">{fullName}</p>
               {user.role === "ADMIN" && (
                 <ShieldCheck className="h-3 w-3 text-primary" />
               )}
             </div>
-            <p className="text-[11px] text-slate-400 font-medium tracking-wide">
+            <p className="text-xs leading-none text-muted-foreground">
               {user.email}
             </p>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator className="bg-slate-50 dark:bg-slate-900" />
+        <DropdownMenuSeparator />
 
-        <div className="py-2">
-          <DropdownMenuItem
-            onClick={() => router.push("/account")}
-            className="px-5 py-3 cursor-pointer rounded-none focus:bg-slate-50 dark:focus:bg-slate-900 group"
-          >
-            <UserCircle className="mr-3 h-4 w-4 text-slate-400 group-hover:text-primary transition-colors" />
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-100">
-              Profile Details
-            </span>
-          </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/accounts")}>
+          <UserCircle className="mr-2 h-4 w-4" />
+          <span>Profile Details</span>
+        </DropdownMenuItem>
 
-          <DropdownMenuItem
-            onClick={() => router.push("/account")}
-            className="px-5 py-3 cursor-pointer rounded-none focus:bg-slate-50 dark:focus:bg-slate-900 group"
-          >
-            <LayoutDashboard className="mr-3 h-4 w-4 text-slate-400 group-hover:text-primary transition-colors" />
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-100">
-              User Dashboard
-            </span>
-          </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/accounts")}>
+          <LayoutDashboard className="mr-2 h-4 w-4" />
+          <span>User Dashboard</span>
+        </DropdownMenuItem>
 
-          <DropdownMenuItem
-            onClick={() => router.push("/account")}
-            className="px-5 py-3 cursor-pointer rounded-none focus:bg-slate-50 dark:focus:bg-slate-900 group"
-          >
-            <Settings className="mr-3 h-4 w-4 text-slate-400 group-hover:text-primary transition-colors" />
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-100">
-              Account Settings
-            </span>
-          </DropdownMenuItem>
-        </div>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/accounts")}>
+          <Settings className="mr-2 h-4 w-4" />
+          <span>Account Settings</span>
+        </DropdownMenuItem>
 
-        <DropdownMenuSeparator className="bg-slate-50 dark:bg-slate-900" />
+        <DropdownMenuSeparator />
 
-        <div className="py-2">
-          <DropdownMenuItem
-            onClick={handleLogout}
-            className="px-5 py-3 cursor-pointer rounded-none focus:bg-red-50 dark:focus:bg-red-950/30 group"
-          >
-            <LogOut className="mr-3 h-4 w-4 text-slate-400 group-hover:text-red-500 transition-colors" />
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400 group-hover:text-red-600 dark:group-hover:text-red-400">
-              Sign Out
-            </span>
-          </DropdownMenuItem>
-        </div>
+        <DropdownMenuItem className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/30" onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Sign Out</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

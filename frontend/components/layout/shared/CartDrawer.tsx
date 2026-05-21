@@ -2,9 +2,12 @@
 
 import { ShoppingBag } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useUI } from "@/lib/context/UIContext";
-import { useCartItems, useRemoveFromCart } from "@/modules/cart/hooks";
-import { useCartSync } from "@/modules/cart/hooks/useCartSync";
+import { useUI } from "@/components/context/UIContext";
+import {
+  useCartItems,
+  useRemoveFromCart,
+  useCartSync,
+} from "@/modules/cart/hooks";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -12,6 +15,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { CartDrawerHeader } from "./cart/CartDrawerHeader";
 import { CartDrawerFooter } from "./cart/CartDrawerFooter";
 import { CartItem } from "./cart/CartItem";
+import { CartItemType } from "@/modules/cart/types/types";
 
 export const CartDrawer = () => {
   const router = useRouter();
@@ -19,24 +23,20 @@ export const CartDrawer = () => {
   const { data: cartItems = [], isLoading } = useCartItems();
   const { mutate: removeFromCart } = useRemoveFromCart();
 
-  const {
-    localQuantities,
-    isSyncing,
-    updateLocalQuantity,
-    syncCart,
-  } = useCartSync(cartItems);
+  const { localQuantities, isSyncing, updateLocalQuantity, syncCart } =
+    useCartSync(cartItems);
 
   const handleProceedToCheckout = async () => {
     try {
       await syncCart();
       closeCart();
       router.push("/checkout");
-    } catch (error) {
+    } catch {
       // Error is handled in the hook (logger)
     }
   };
 
-  const subtotal = cartItems.reduce((acc, item) => {
+  const subtotal = cartItems.reduce((acc: number, item: CartItemType) => {
     const price = item.product_variants?.products?.base_price ?? 0;
     const quantity = localQuantities[item.id] ?? item.quantity;
     return acc + Number(price) * quantity;
@@ -68,7 +68,8 @@ export const CartDrawer = () => {
                       Your bag is empty
                     </h3>
                     <p className="text-xs text-muted-foreground max-w-[240px] mx-auto leading-relaxed">
-                      Looks like you haven&apos;t added any premium streetwear to your collection yet.
+                      Looks like you haven&apos;t added any premium streetwear
+                      to your collection yet.
                     </p>
                   </div>
                   <Button
@@ -81,7 +82,7 @@ export const CartDrawer = () => {
                 </div>
               ) : (
                 <div className="space-y-8">
-                  {cartItems.map((item) => (
+                  {cartItems.map((item: CartItemType) => (
                     <CartItem
                       key={item.id}
                       item={item}
