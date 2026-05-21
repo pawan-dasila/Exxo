@@ -301,8 +301,9 @@ function SuggestionsPanel({
       {query.length >= 2 && (
         <div
           className="p-3 border-t border-zinc-100 cursor-pointer hover:bg-zinc-50 transition-colors"
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() =>
-            onNavigate(`/search?q=${encodeURIComponent(query.trim())}`)
+            onNavigate(`/products?q=${encodeURIComponent(query.trim())}`)
           }
         >
           <p className="text-[11px] font-semibold text-violet-600 flex items-center justify-center gap-1.5">
@@ -336,7 +337,7 @@ export function NavbarSearch() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (query.trim()) {
-      navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+      navigate(`/products?q=${encodeURIComponent(query.trim())}`);
     }
   };
 
@@ -396,9 +397,12 @@ export function NavbarSearch() {
           </div>
         </form>
 
-        {/* Suggestions dropdown */}
+        {/* Suggestions dropdown — onMouseDown prevents input blur before click fires */}
         {dropdownOpen && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-zinc-200 overflow-hidden z-50">
+          <div
+            className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-zinc-200 overflow-hidden z-50"
+            onMouseDown={(e) => e.preventDefault()}
+          >
             <SuggestionsPanel
               query={query}
               debouncedQuery={debouncedQuery}

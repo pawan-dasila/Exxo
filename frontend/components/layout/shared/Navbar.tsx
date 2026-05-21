@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useState, memo, useCallback } from "react";
-import {
-  Menu,
-  X,
-  ShoppingBag,
-  PlusCircle,
-  Bell,
-  Info,
-} from "lucide-react";
+import { Menu, X, ShoppingBag, PlusCircle, Bell, Info } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import dynamic from "next/dynamic";
@@ -46,7 +39,6 @@ export const Navbar = memo(function Navbar() {
       className="relative z-50 transition-all duration-300 w-full bg-white border-b border-border/50"
     >
       <div className="max-w-none w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between h-[72px] gap-3 lg:gap-4">
-
         {/* Logo */}
         <div className="flex items-center shrink-0">
           <Link
@@ -90,17 +82,6 @@ export const Navbar = memo(function Navbar() {
           >
             <ShoppingBag className="w-5 h-5" aria-hidden="true" />
           </Button>
-
-          {/* Notifications */}
-          <button
-            aria-label="Notifications"
-            className="w-10 h-10 rounded-full hover:bg-stone-100 hidden sm:flex items-center justify-center relative cursor-pointer text-stone-600 hover:text-stone-800 transition-colors"
-          >
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-2 right-2 bg-rose-500 text-white text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center">
-              3
-            </span>
-          </button>
 
           {/* User Profile */}
           <UserProfile />

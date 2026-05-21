@@ -1,7 +1,7 @@
 // import { Suspense } from "react";
 import { Footer } from "@/components/layout/shared/Footer";
 import { Navbar } from "@/components/layout/shared/Navbar";
-import { CartDrawer } from "@/components/layout/shared/CartDrawer";
+// import { CartDrawer } from "@/components/layout/shared/CartDrawer";
 // import { SplashScreen } from "@/components/layout/shared/SplashScreen";
 import { Metadata } from "next";
 import { siteConfig } from "@/lib/config/site";
@@ -67,7 +67,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     url: siteConfig.url,
     potentialAction: {
       "@type": "SearchAction",
-      target: `${siteConfig.url}/search?q={search_term_string}`,
+      target: `${siteConfig.url}/products?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   };
