@@ -8,6 +8,14 @@ import { Product } from "@/modules/products/types";
 import { ProductCard } from "@/modules/products/components/ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
 export default function PopularProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -18,7 +26,7 @@ export default function PopularProducts() {
     async function fetchPopular() {
       try {
         setIsLoading(true);
-        const data = await getProductsAction({ popular: "true", limit: 4 });
+        const data = await getProductsAction({ popular: "true", limit: 10 });
         if (isMounted) {
           setProducts(data);
           setIsError(false);
@@ -67,11 +75,11 @@ export default function PopularProducts() {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {Array.from({ length: 4 }).map((_, i) => (
+          <div className="flex gap-6 overflow-hidden">
+            {Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-white border border-zinc-100 rounded-2xl overflow-hidden shadow-2xs flex flex-col h-[320px]"
+                className="bg-white border border-zinc-100 rounded-2xl overflow-hidden shadow-2xs flex flex-col h-[320px] basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-[20%] shrink-0"
               >
                 <Skeleton className="w-full aspect-[4/3] bg-zinc-100" />
                 <div className="p-4 flex-1 flex flex-col justify-between gap-3">
@@ -94,16 +102,22 @@ export default function PopularProducts() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="transition-all duration-300 hover:shadow-[0_10px_30px_-10px_rgba(139,92,246,0.12)] hover:-translate-y-1 rounded-2xl"
-              >
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
+          <Carousel opts={{ align: "start", loop: false }} className="w-full relative px-1">
+            <CarouselContent className="-ml-4">
+              {products.map((product) => (
+                <CarouselItem
+                  key={product.id}
+                  className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-[20%]"
+                >
+                  <div className="transition-all duration-300 hover:shadow-[0_10px_30px_-10px_rgba(139,92,246,0.12)] hover:-translate-y-1 rounded-2xl pb-1 h-full">
+                    <ProductCard product={product} />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex -left-6 bg-white border border-zinc-200 hover:bg-zinc-50 shadow-sm" />
+            <CarouselNext className="hidden md:flex -right-6 bg-white border border-zinc-200 hover:bg-zinc-50 shadow-sm" />
+          </Carousel>
         )}
       </div>
     </section>

@@ -36,11 +36,11 @@ export const metadata: Metadata = {
 };
 
 const HeroSkeleton = () => (
-  <div className="w-full h-[600px] animate-pulse bg-muted/20" />
+  <div className="w-full h-150 animate-pulse bg-muted/20" />
 );
 
 const CategoriesSkeleton = () => (
-  <div className="w-full h-[200px] animate-pulse bg-muted/10 px-[50px] py-10">
+  <div className="w-full h-50 animate-pulse bg-muted/10 px-12.5 py-10">
     <Skeleton className="h-8 w-64 mb-4" />
     <div className="flex gap-4">
       {[1, 2, 3, 4, 5].map((i) => (
@@ -51,11 +51,11 @@ const CategoriesSkeleton = () => (
 );
 
 const ProductsSkeleton = () => (
-  <div className="w-full h-[320px] animate-pulse bg-muted/5 px-[50px] py-10">
+  <div className="w-full h-80 animate-pulse bg-muted/5 px-12.5 py-10">
     <Skeleton className="h-8 w-64 mb-4" />
     <div className="flex gap-6">
       {[1, 2, 3, 4].map((i) => (
-        <Skeleton key={i} className="h-[250px] w-full rounded-2xl" />
+        <Skeleton key={i} className="h-62.5 w-full rounded-2xl" />
       ))}
     </div>
   </div>
@@ -80,8 +80,8 @@ export default function Home() {
         <StudentStore />
       </Suspense>
 
-      <div className="relative w-full px-10 mx-auto my-12">
-        <div className="relative w-full h-[500px] overflow-hidden rounded-2xl shadow-sm">
+      <div className="relative w-full px-12.5 mx-auto my-15">
+        <div className="relative w-full h-125 overflow-hidden rounded-2xl shadow-sm">
           <Image
             src="/assets/banner/prod-banner.png"
             alt="Premium Rent Smart Trust Banner"
