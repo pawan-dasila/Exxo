@@ -61,7 +61,7 @@ jobs:
         working-directory: backend
 
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/postgres' }}
 
     steps:
       - name: Checkout Repository
