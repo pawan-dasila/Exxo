@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { AsyncHandler } from "../middleware/AsyncHandler.middleware";
-import { RentalService } from "../services/rental.service";
-import { ApiResponse } from "../utils/ApiResponse";
-import prisma from "../lib/prisma";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { createRentalOrderSchema } from "../validation/rental.validation";
+import { AsyncHandler } from '../middleware/AsyncHandler.middleware.js';
+import { RentalService } from '../services/rental.service.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import prisma from '../lib/prisma.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import { createRentalOrderSchema } from '../validation/rental.validation.js';
 
 export class RentalController {
   public static createRentalOrder = AsyncHandler(

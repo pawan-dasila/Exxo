@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { AsyncHandler } from "../middleware/AsyncHandler.middleware";
+import { AsyncHandler } from '../middleware/AsyncHandler.middleware.js';
 import {
   updateProfileSchema,
   addressSchema,
   changePasswordSchema,
-} from "../validation/user.validation";
-import { UserService } from "../services/user.service";
-import { ApiResponse } from "../utils/ApiResponse";
-import { HTTPSTATUS } from "../configs/Https.config";
+} from '../validation/user.validation.js';
+import { UserService } from '../services/user.service.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
 
 export class UserController {
   public static updateProfile = AsyncHandler(

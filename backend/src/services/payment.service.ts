@@ -1,7 +1,7 @@
 import crypto from "crypto";
-import { Env } from "../configs/env.config";
-import prisma from "../lib/prisma";
-import logger from "../utils/logger";
+import { Env } from '../configs/env.config.js';
+import prisma from '../lib/prisma.js';
+import logger from '../utils/logger.js';
 
 interface RazorpayWebhookPayload {
   payment: {

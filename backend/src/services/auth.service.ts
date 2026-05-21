@@ -1,26 +1,26 @@
-import prisma from "../lib/prisma";
+import prisma from '../lib/prisma.js';
 import {
   SignJwtToken,
   refreshTokenSignOptions,
   SignVerificationToken,
   VerifyVerificationToken,
   AccessTokenPayload,
-} from "../utils/jwt";
-import { hashPassword, compareValue } from "../utils/bcrypt";
-import { MailService } from "./mail.service";
+} from '../utils/jwt.js';
+import { hashPassword, compareValue } from '../utils/bcrypt.js';
+import { MailService } from './mail.service.js';
 import jwt from "jsonwebtoken";
-import { Env } from "../configs/env.config";
-import { AppError } from "../utils/AppError";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { ErrorCodeEnum } from "../enums/error-code.enum";
+import { Env } from '../configs/env.config.js';
+import { AppError } from '../utils/AppError.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import { ErrorCodeEnum } from '../enums/error-code.enum.js';
 import {
   RegisterType,
   LoginType,
   RefreshTokenType,
   ForgotPasswordType,
   ResetPasswordType,
-} from "../validation/user.validation";
-import { USER_SAFE_SELECT } from "./user.service";
+} from '../validation/user.validation.js';
+import { USER_SAFE_SELECT } from './user.service.js';
 
 export class AuthService {
   public static async register(data: RegisterType) {

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { CategoryController } from "../controllers/category.controller";
-import { Protect, RestrictTo } from "../middleware/auth.middleware";
+import { CategoryController } from '../controllers/category.controller.js';
+import { Protect, RestrictTo } from '../middleware/auth.middleware.js';
 import { Role } from "@prisma/client";
 
 const router = Router();

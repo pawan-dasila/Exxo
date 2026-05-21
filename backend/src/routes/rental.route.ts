@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { RentalController } from "../controllers/rental.controller";
-import { ExtensionController } from "../controllers/extension.controller";
-import { TrustController } from "../controllers/trust.controller";
-import { Protect, VerifiedOnly } from "../middleware/auth.middleware";
+import { RentalController } from '../controllers/rental.controller.js';
+import { ExtensionController } from '../controllers/extension.controller.js';
+import { TrustController } from '../controllers/trust.controller.js';
+import { Protect, VerifiedOnly } from '../middleware/auth.middleware.js';
 
 const router = Router();
 

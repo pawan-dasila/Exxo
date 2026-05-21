@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { AsyncHandler } from "../middleware/AsyncHandler.middleware";
-import { CategoryService } from "../services/category.service";
-import { ApiResponse } from "../utils/ApiResponse";
-import { HTTPSTATUS } from "../configs/Https.config";
+import { AsyncHandler } from '../middleware/AsyncHandler.middleware.js';
+import { CategoryService } from '../services/category.service.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
 import {
   createCategorySchema,
   updateCategorySchema,
-} from "../validation/category.validation";
+} from '../validation/category.validation.js';
 
 export class CategoryController {
   public static createCategory = AsyncHandler(

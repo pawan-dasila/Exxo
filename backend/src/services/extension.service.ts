@@ -1,8 +1,8 @@
-import prisma from "../lib/prisma";
-import { AppError } from "../utils/AppError";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { ErrorCodeEnum } from "../enums/error-code.enum";
-import { AvailabilityService } from "./availability.service";
+import prisma from '../lib/prisma.js';
+import { AppError } from '../utils/AppError.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import { ErrorCodeEnum } from '../enums/error-code.enum.js';
+import { AvailabilityService } from './availability.service.js';
 import { differenceInDays, isAfter } from "date-fns";
 import { RentalExtensionRequest } from "@prisma/client";
 

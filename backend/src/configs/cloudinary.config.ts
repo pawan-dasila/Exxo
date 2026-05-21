@@ -1,5 +1,5 @@
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
-import { Env } from "./env.config";
+import { Env } from './env.config.js';
 import streamifier from "streamifier";
 
 cloudinary.config({

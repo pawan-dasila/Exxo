@@ -8,8 +8,8 @@ import {
   logoutController,
   forgotPasswordController,
   resetPasswordController,
-} from "../controllers/auth.controller";
-import { Protect } from "../middleware/auth.middleware";
+} from '../controllers/auth.controller.js';
+import { Protect } from '../middleware/auth.middleware.js';
 
 const authRoutes = Router();
 

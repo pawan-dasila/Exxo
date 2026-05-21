@@ -1,14 +1,14 @@
-import prisma from "../lib/prisma";
+import prisma from '../lib/prisma.js';
 import { Prisma } from "@prisma/client";
 import {
   CreateProductInput,
   UpdateProductInput,
   ProductFilters,
-} from "../validation/product.validation";
-import { AppError } from "../utils/AppError";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { ErrorCodeEnum } from "../enums/error-code.enum";
-import { generateSlug } from "../utils/slug";
+} from '../validation/product.validation.js';
+import { AppError } from '../utils/AppError.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import { ErrorCodeEnum } from '../enums/error-code.enum.js';
+import { generateSlug } from '../utils/slug.js';
 
 export class ProductService {
   public static async createProduct(userId: string, data: CreateProductInput) {

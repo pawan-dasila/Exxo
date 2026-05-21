@@ -1,6 +1,6 @@
 import { Resend } from "resend";
-import { Env } from "../configs/env.config";
-import logger from "../utils/logger";
+import { Env } from '../configs/env.config.js';
+import logger from '../utils/logger.js';
 
 export class MailService {
   private static resend = new Resend(Env.RESEND_API_KEY);

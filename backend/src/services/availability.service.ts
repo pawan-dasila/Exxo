@@ -1,7 +1,7 @@
-import prisma from "../lib/prisma";
-import { AppError } from "../utils/AppError";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { ErrorCodeEnum } from "../enums/error-code.enum";
+import prisma from '../lib/prisma.js';
+import { AppError } from '../utils/AppError.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import { ErrorCodeEnum } from '../enums/error-code.enum.js';
 import { isBefore } from "date-fns";
 
 export class AvailabilityService {

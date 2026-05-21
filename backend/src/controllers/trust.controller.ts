@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { AsyncHandler } from "../middleware/AsyncHandler.middleware";
-import { TrustService } from "../services/trust.service";
-import { inspectionSchema, damageReportSchema, disputeSchema } from "../validation/trust.validation";
-import { HTTPSTATUS } from "../configs/Https.config";
+import { AsyncHandler } from '../middleware/AsyncHandler.middleware.js';
+import { TrustService } from '../services/trust.service.js';
+import { inspectionSchema, damageReportSchema, disputeSchema } from '../validation/trust.validation.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
 
 export class TrustController {
   /**

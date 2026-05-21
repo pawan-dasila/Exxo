@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { AsyncHandler } from "../middleware/AsyncHandler.middleware";
-import { ProductService } from "../services/product.service";
-import { ApiResponse } from "../utils/ApiResponse";
-import { HTTPSTATUS } from "../configs/Https.config";
+import { AsyncHandler } from '../middleware/AsyncHandler.middleware.js';
+import { ProductService } from '../services/product.service.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
 import {
   createProductSchema,
   updateProductSchema,
   productFilterSchema,
-} from "../validation/product.validation";
+} from '../validation/product.validation.js';
 
 export class ProductController {
   public static createProduct = AsyncHandler(

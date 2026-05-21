@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { AsyncHandler } from "../middleware/AsyncHandler.middleware";
-import { AvailabilityService } from "../services/availability.service";
-import { checkAvailabilitySchema } from "../validation/availability.validation";
-import { ApiResponse } from "../utils/ApiResponse";
-import { HTTPSTATUS } from "../configs/Https.config";
+import { AsyncHandler } from '../middleware/AsyncHandler.middleware.js';
+import { AvailabilityService } from '../services/availability.service.js';
+import { checkAvailabilitySchema } from '../validation/availability.validation.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
 
 export class AvailabilityController {
   public static checkAvailability = AsyncHandler(

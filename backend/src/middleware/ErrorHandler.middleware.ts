@@ -1,12 +1,12 @@
 import { Response } from "express";
 import { z, ZodError } from "zod";
 import { ErrorRequestHandler } from "express";
-import { ErrorCodeEnum } from "../enums/error-code.enum";
+import { ErrorCodeEnum } from '../enums/error-code.enum.js';
 import { MulterError } from "multer";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { AppError } from "../utils/AppError";
-import logger from "../utils/logger";
-import { Env } from "../configs/env.config";
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import { AppError } from '../utils/AppError.js';
+import logger from '../utils/logger.js';
+import { Env } from '../configs/env.config.js';
 
 const formatZodError = (res: Response, error: z.ZodError) => {
   const errors = error?.issues?.map((err) => ({

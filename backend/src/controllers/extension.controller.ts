@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { AsyncHandler } from "../middleware/AsyncHandler.middleware";
-import { ExtensionService } from "../services/extension.service";
-import { extensionRequestSchema } from "../validation/extension.validation";
-import { HTTPSTATUS } from "../configs/Https.config";
+import { AsyncHandler } from '../middleware/AsyncHandler.middleware.js';
+import { ExtensionService } from '../services/extension.service.js';
+import { extensionRequestSchema } from '../validation/extension.validation.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
 
 export class ExtensionController {
   /**

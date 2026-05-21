@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { ProductController } from "../controllers/product.controller";
-import { AvailabilityController } from "../controllers/availability.controller";
-import { Protect, VerifiedOnly } from "../middleware/auth.middleware";
-import { UploadImages } from "../middleware/upload.middleware";
+import { ProductController } from '../controllers/product.controller.js';
+import { AvailabilityController } from '../controllers/availability.controller.js';
+import { Protect, VerifiedOnly } from '../middleware/auth.middleware.js';
+import { UploadImages } from '../middleware/upload.middleware.js';
 
 const router = Router();
 

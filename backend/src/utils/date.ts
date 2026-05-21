@@ -8,7 +8,7 @@ import {
   subMonths,
   subYears,
 } from "date-fns";
-import { DateRangeEnum, DateRangePreset } from "../enums/date-range.enum";
+import { DateRangeEnum, DateRangePreset } from '../enums/date-range.enum.js';
 
 export const getDateRange = (
   preset?: DateRangePreset,

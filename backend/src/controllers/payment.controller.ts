@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { AsyncHandler } from "../middleware/AsyncHandler.middleware";
-import { PaymentService } from "../services/payment.service";
-import { HTTPSTATUS } from "../configs/Https.config";
-import logger from "../utils/logger";
+import { AsyncHandler } from '../middleware/AsyncHandler.middleware.js';
+import { PaymentService } from '../services/payment.service.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import logger from '../utils/logger.js';
 
 export class PaymentController {
   public static handleWebhook = AsyncHandler(

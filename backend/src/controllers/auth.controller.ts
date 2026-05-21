@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { AuthService } from "../services/auth.service";
-import { AsyncHandler } from "../middleware/AsyncHandler.middleware";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { ApiResponse } from "../utils/ApiResponse";
+import { AuthService } from '../services/auth.service.js';
+import { AsyncHandler } from '../middleware/AsyncHandler.middleware.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
 import {
   registerSchema,
   loginSchema,
   refreshTokenSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
-} from "../validation/user.validation";
+} from '../validation/user.validation.js';
 import { z } from "zod";
-import { Env } from "../configs/env.config";
+import { Env } from '../configs/env.config.js';
 
 export const registerController = AsyncHandler(
   async (req: Request, res: Response) => {

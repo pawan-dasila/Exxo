@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { upload } from "../utils/multer.util";
-import { CloudinaryService, CLOUDINARY_FOLDERS } from "../configs/cloudinary.config";
-import { AppError } from "../utils/AppError";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { ErrorCodeEnum } from "../enums/error-code.enum";
+import { upload } from '../utils/multer.util.js';
+import { CloudinaryService, CLOUDINARY_FOLDERS } from '../configs/cloudinary.config.js';
+import { AppError } from '../utils/AppError.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import { ErrorCodeEnum } from '../enums/error-code.enum.js';
 
 /**
  * Middleware to handle multiple image uploads to Cloudinary.

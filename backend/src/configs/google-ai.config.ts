@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
-import { Env } from "./env.config";
-import logger from "../utils/logger";
+import { Env } from './env.config.js';
+import logger from '../utils/logger.js';
 
 const API_KEY = Env.GEMINI_API_KEY;
 

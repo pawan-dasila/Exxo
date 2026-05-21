@@ -2,17 +2,17 @@ import {
   UpdateProfileType,
   addressSchema,
   ChangePasswordType,
-} from "../validation/user.validation";
-import prisma from "../lib/prisma";
+} from '../validation/user.validation.js';
+import prisma from '../lib/prisma.js';
 import { z } from "zod";
-import { hashPassword, compareValue } from "../utils/bcrypt";
+import { hashPassword, compareValue } from '../utils/bcrypt.js';
 import {
   CloudinaryService,
   CLOUDINARY_FOLDERS,
-} from "../configs/cloudinary.config";
-import { AppError } from "../utils/AppError";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { ErrorCodeEnum } from "../enums/error-code.enum";
+} from '../configs/cloudinary.config.js';
+import { AppError } from '../utils/AppError.js';
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import { ErrorCodeEnum } from '../enums/error-code.enum.js';
 
 export const USER_SAFE_SELECT = {
   id: true,

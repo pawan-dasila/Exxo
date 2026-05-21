@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { Env } from "../configs/env.config";
-import { AppError } from "../utils/AppError";
+import { Env } from '../configs/env.config.js';
+import { AppError } from '../utils/AppError.js';
 import jwt from "jsonwebtoken";
-import { HTTPSTATUS } from "../configs/Https.config";
-import { ErrorCodeEnum } from "../enums/error-code.enum";
-import { AccessTokenPayload } from "../utils/jwt";
+import { HTTPSTATUS } from '../configs/Https.config.js';
+import { ErrorCodeEnum } from '../enums/error-code.enum.js';
+import { AccessTokenPayload } from '../utils/jwt.js';
 
 export const Protect = (req: Request, res: Response, next: NextFunction) => {
   let token;
