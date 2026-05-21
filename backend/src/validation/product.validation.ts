@@ -40,3 +40,10 @@ export const productFilterSchema = z.object({
 export type CreateProductInput = z.infer<typeof createProductSchema>;
 export type UpdateProductInput = z.infer<typeof updateProductSchema>;
 export type ProductFilters = z.infer<typeof productFilterSchema>;
+
+export const searchSuggestionsSchema = z.object({
+  q: z.string().min(1, "Query is required").max(100, "Query too long").trim(),
+});
+
+export type SearchSuggestionsQuery = z.infer<typeof searchSuggestionsSchema>;
+

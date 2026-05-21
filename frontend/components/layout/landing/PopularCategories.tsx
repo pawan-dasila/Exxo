@@ -34,9 +34,9 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
 
   return (
     <Link
-      href={`/search?category=${category.slug}`}
+      href={`/products?category=${category.slug}`}
       className={cn(
-        "flex-none w-[220px] rounded-2xl p-5 flex flex-col justify-between border backdrop-blur-md relative overflow-hidden min-h-[140px] group cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "flex-none w-55 rounded-2xl p-5 flex flex-col justify-between border backdrop-blur-md relative overflow-hidden min-h-35 group cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         bgPreset,
       )}
       aria-label={`View collection for ${category.name}. Contains ${productCount} items.`}
@@ -46,7 +46,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
           <h3 className="text-[15px] font-bold text-foreground mb-1 leading-tight group-hover:text-primary transition-colors">
             {category.name}
           </h3>
-          <p className="text-[11px] text-muted-foreground leading-snug max-w-[140px]">
+          <p className="text-[11px] text-muted-foreground leading-snug max-w-36">
             Premium select pieces ready to rent
           </p>
         </div>
@@ -81,7 +81,8 @@ export default function PopularCategories() {
 
   const checkScroll = () => {
     if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
       setCanScrollLeft(scrollLeft > 1);
       setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
     }
@@ -107,7 +108,9 @@ export default function PopularCategories() {
       const { scrollLeft } = scrollContainerRef.current;
       const scrollAmount = 480; // scrolls 2 full cards
       const newScrollLeft =
-        direction === "left" ? scrollLeft - scrollAmount : scrollLeft + scrollAmount;
+        direction === "left"
+          ? scrollLeft - scrollAmount
+          : scrollLeft + scrollAmount;
       scrollContainerRef.current.scrollTo({
         left: newScrollLeft,
         behavior: "smooth",
@@ -117,7 +120,7 @@ export default function PopularCategories() {
 
   return (
     <section className="bg-[#fafbff] pt-2">
-      <div className="max-w-full lg:px-[50px] mx-auto px-6">
+      <div className="max-w-full lg:px-12.5 mx-auto px-6">
         <div className="flex items-end justify-between mb-6">
           <div>
             <h2 className="text-[28px] md:text-[32px] font-extrabold text-foreground mb-1 tracking-tight">
@@ -160,7 +163,7 @@ export default function PopularCategories() {
               Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}
-                  className="flex-none w-[220px] h-[140px] rounded-2xl p-5 border border-zinc-200/40 bg-zinc-50 flex flex-col justify-between"
+                  className="flex-none w-52 h-35 rounded-2xl p-5 border border-zinc-200/40 bg-zinc-50 flex flex-col justify-between"
                 >
                   <div className="flex flex-col gap-2">
                     <Skeleton className="h-5 w-24 rounded bg-zinc-200" />

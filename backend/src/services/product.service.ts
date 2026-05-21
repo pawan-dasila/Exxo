@@ -338,4 +338,53 @@ export class ProductService {
       orderBy: { createdAt: "desc" },
     });
   }
+  /**
+   * Fast typeahead suggestions: returns up to 5 matching products
+   * and up to 4 matching categories in a single parallel query.
+   */
+  public static async searchSuggestions(q: string) {
+    const [products, categories] = await Promise.all([
+      prisma.product.findMany({
+        where: {
+          deletedAt: null,
+          status: "ACTIVE",
+          OR: [
+            { name: { contains: q, mode: "insensitive" } },
+            { description: { contains: q, mode: "insensitive" } },
+          ],
+        },
+        take: 5,
+        orderBy: { viewCount: "desc" },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          rentalPrice: true,
+          images: {
+            select: { imageUrl: true },
+            orderBy: { sortOrder: "asc" },
+            take: 1,
+          },
+          category: {
+            select: { id: true, name: true, slug: true },
+          },
+        },
+      }),
+      prisma.category.findMany({
+        where: {
+          name: { contains: q, mode: "insensitive" },
+        },
+        take: 4,
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          imageUrl: true,
+          _count: { select: { products: true } },
+        },
+      }),
+    ]);
+
+    return { products, categories };
+  }
 }

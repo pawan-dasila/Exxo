@@ -30,7 +30,7 @@ export const Footer = () => {
                     id="footer-email"
                     type="email"
                     placeholder="Enter your email"
-                    className="bg-transparent border border-muted-foreground/30 rounded-full px-6 py-4 w-full focus:outline-none focus:border-white transition-all text-sm pr-[120px]"
+                    className="bg-transparent border border-muted-foreground/30 rounded-full px-6 py-4 w-full focus:outline-none focus:border-white transition-all text-sm pr-30"
                     required
                   />
                   <button
@@ -133,30 +133,6 @@ export const Footer = () => {
               </h3>
               <ul className="space-y-4 text-xs md:text-sm text-muted-foreground">
                 {siteConfig.navigation.footer.support.map((item) => (
-                  <li key={item.name}>
-                    <Link
-                      href={item.href}
-                      className="hover:text-background transition-colors"
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-
-            <nav
-              className="col-span-1 lg:col-span-2 lg:col-start-13"
-              aria-labelledby="footer-legal-heading"
-            >
-              <h3
-                id="footer-legal-heading"
-                className="text-xs font-bold tracking-wider uppercase text-muted-foreground mb-6"
-              >
-                LEGAL
-              </h3>
-              <ul className="space-y-4 text-xs md:text-sm text-muted-foreground">
-                {siteConfig.navigation.footer.legal.map((item) => (
                   <li key={item.name}>
                     <Link
                       href={item.href}

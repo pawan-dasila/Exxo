@@ -3,14 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Heart,
-  Star,
-  CheckCircle,
-  Sparkles,
-  ThumbsUp,
-  ShieldAlert,
-} from "lucide-react";
+import { Heart, Star, CheckCircle } from "lucide-react";
 import { Product } from "../types";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
@@ -25,39 +18,6 @@ const formatPrice = (price: number) => {
     currency: "INR",
     maximumFractionDigits: 0,
   }).format(price);
-};
-
-const renderConditionBadge = (condition: string) => {
-  const cond = condition.toUpperCase();
-  if (cond === "NEW") {
-    return (
-      <Badge className="bg-indigo-50 hover:bg-indigo-50 text-indigo-600 border border-indigo-100/50 px-2 py-0.5 text-[9px] font-extrabold rounded-md shadow-2xs flex items-center gap-1">
-        <Sparkles className="w-2.5 h-2.5 text-indigo-500 shrink-0" />
-        <span>NEW</span>
-      </Badge>
-    );
-  }
-  if (cond === "GOOD") {
-    return (
-      <Badge className="bg-emerald-50 hover:bg-emerald-50 text-emerald-600 border border-emerald-100/50 px-2 py-0.5 text-[9px] font-extrabold rounded-md shadow-2xs flex items-center gap-1">
-        <ThumbsUp className="w-2.5 h-2.5 text-emerald-500 shrink-0" />
-        <span>GOOD</span>
-      </Badge>
-    );
-  }
-  if (cond === "MINOR_WEAR" || cond === "MINOR WEAR") {
-    return (
-      <Badge className="bg-amber-50 hover:bg-amber-50 text-amber-600 border border-amber-100/50 px-2 py-0.5 text-[9px] font-extrabold rounded-md shadow-2xs flex items-center gap-1">
-        <ShieldAlert className="w-2.5 h-2.5 text-amber-500 shrink-0" />
-        <span>WEAR</span>
-      </Badge>
-    );
-  }
-  return (
-    <Badge className="bg-zinc-50 hover:bg-zinc-50 text-zinc-600 border border-zinc-200 px-2 py-0.5 text-[9px] font-extrabold rounded-md shadow-2xs">
-      {condition.replace("_", " ")}
-    </Badge>
-  );
 };
 
 export const ProductCard = React.memo<ProductCardProps>(({ product }) => {
@@ -117,17 +77,13 @@ export const ProductCard = React.memo<ProductCardProps>(({ product }) => {
             {product.name}
           </h4>
 
-          {/* Price, Rating & Distance Row arranged below */}
+          {/* Rating & Price on the same row */}
           <div className="flex items-center justify-between gap-2 mt-2">
-            {/* Rating, Reviews & Distance */}
-            <div className="flex items-center gap-1.5 text-[11px] text-zinc-500">
-              <span className="flex items-center text-amber-500 font-bold gap-0.5">
-                <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                {rating}
-              </span>
-              <span className="text-zinc-300">({reviewCount})</span>
-              <span className="w-1 h-1 rounded-full bg-zinc-300" />
-              <span>{distance} km</span>
+            {/* Rating + Reviews */}
+            <div className="flex items-center gap-1 text-[11px]">
+              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+              <span className="text-amber-500 font-bold">{rating}</span>
+              <span className="text-zinc-400">({reviewCount})</span>
             </div>
 
             {/* Price Info */}
@@ -140,10 +96,29 @@ export const ProductCard = React.memo<ProductCardProps>(({ product }) => {
           </div>
         </div>
 
-        {/* Product specs footer row (Condition & Color Swatch) */}
+        {/* Footer row: Distance & Verified */}
         <div className="border-t border-zinc-100 pt-3 mt-1 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            {product.condition && renderConditionBadge(product.condition)}
+          {/* Distance */}
+          <div className="flex items-center gap-1 text-[11px] text-zinc-500">
+            <svg
+              className="w-3 h-3 text-zinc-400 shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            <span className="font-medium">{distance} km</span>
           </div>
 
           {/* Verified tag badge */}

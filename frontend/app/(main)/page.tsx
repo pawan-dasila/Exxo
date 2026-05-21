@@ -80,15 +80,15 @@ export default function Home() {
         <StudentStore />
       </Suspense>
 
-      <div className="relative w-full px-12.5 mx-auto my-15">
-        <div className="relative w-full h-125 overflow-hidden rounded-2xl shadow-sm">
+      <div className="relative w-full px-4 sm:px-6 lg:px-12.5 mx-auto my-10 md:my-15">
+        <div className="relative w-full aspect-16/7 sm:aspect-16/7 md:aspect-16/6 lg:aspect-16/5 overflow-hidden rounded-2xl">
           <Image
             src="/assets/banner/prod-banner.png"
             alt="Premium Rent Smart Trust Banner"
             fill
             priority
-            sizes="100vw"
-            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 90vw"
+            className="object-cover object-center"
           />
         </div>
       </div>

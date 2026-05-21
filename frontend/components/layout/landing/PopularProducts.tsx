@@ -50,7 +50,7 @@ export default function PopularProducts() {
 
   return (
     <section className="bg-white py-12 md:py-16">
-      <div className="max-w-full lg:px-[50px] mx-auto px-6">
+      <div className="max-w-full lg:px-12.5 mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold text-violet-600 bg-violet-50/80 border border-violet-100 mb-3 shadow-2xs">
@@ -62,7 +62,8 @@ export default function PopularProducts() {
               <Sparkles className="w-6 h-6 text-yellow-500 fill-yellow-400 animate-pulse hidden md:inline-block" />
             </h2>
             <p className="text-zinc-500 text-[14px] md:text-[15px] mt-1 max-w-xl">
-              High demand rental pieces, top-rated by our trust community. Secure your booking early.
+              High demand rental pieces, top-rated by our trust community.
+              Secure your booking early.
             </p>
           </div>
           <Link
@@ -79,9 +80,9 @@ export default function PopularProducts() {
             {Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-white border border-zinc-100 rounded-2xl overflow-hidden shadow-2xs flex flex-col h-[320px] basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-[20%] shrink-0"
+                className="bg-white border border-zinc-100 rounded-2xl overflow-hidden shadow-2xs flex flex-col h-80 basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-[20%] shrink-0"
               >
-                <Skeleton className="w-full aspect-[4/3] bg-zinc-100" />
+                <Skeleton className="w-full aspect-4/3 bg-zinc-100" />
                 <div className="p-4 flex-1 flex flex-col justify-between gap-3">
                   <div className="space-y-2">
                     <Skeleton className="h-4 w-3/4 bg-zinc-100 rounded" />
@@ -98,16 +99,20 @@ export default function PopularProducts() {
         ) : isError || products.length === 0 ? (
           <div className="text-center py-12 rounded-2xl border border-dashed border-zinc-200 bg-zinc-50/50">
             <p className="text-sm text-zinc-500 italic">
-              Unable to load trending products right now. Try refreshing the page.
+              Unable to load trending products right now. Try refreshing the
+              page.
             </p>
           </div>
         ) : (
-          <Carousel opts={{ align: "start", loop: false }} className="w-full relative px-1">
+          <Carousel
+            opts={{ align: "start", loop: false }}
+            className="w-full relative px-1"
+          >
             <CarouselContent className="-ml-4">
               {products.map((product) => (
                 <CarouselItem
                   key={product.id}
-                  className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-[20%]"
+                  className="pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-[20%]"
                 >
                   <div className="transition-all duration-300 hover:shadow-[0_10px_30px_-10px_rgba(139,92,246,0.12)] hover:-translate-y-1 rounded-2xl pb-1 h-full">
                     <ProductCard product={product} />

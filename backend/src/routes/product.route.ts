@@ -16,6 +16,9 @@ router.patch("/:id/click", ProductController.clickProduct);
 router.post("/saved-searches", Protect, ProductController.saveSearch);
 router.get("/saved-searches", Protect, ProductController.getSavedSearches);
 
+// Public search suggestions (typeahead) — must be before /:slug
+router.get("/search/suggestions", ProductController.searchSuggestions);
+
 router.get("/:slug", ProductController.getProductBySlug);
 
 // Protected routes

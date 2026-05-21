@@ -7,7 +7,9 @@ import {
   createProductSchema,
   updateProductSchema,
   productFilterSchema,
+  searchSuggestionsSchema,
 } from '../validation/product.validation.js';
+
 
 export class ProductController {
   public static createProduct = AsyncHandler(
@@ -119,6 +121,18 @@ export class ProductController {
         status_code: HTTPSTATUS.OK,
         message: "Saved searches retrieved successfully",
         data: searches,
+      });
+    },
+  );
+  public static searchSuggestions = AsyncHandler(
+    async (req: Request, res: Response) => {
+      const { q } = searchSuggestionsSchema.parse(req.query);
+      const suggestions = await ProductService.searchSuggestions(q);
+
+      return ApiResponse(res, {
+        status_code: HTTPSTATUS.OK,
+        message: "Search suggestions retrieved successfully",
+        data: suggestions,
       });
     },
   );
