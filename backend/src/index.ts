@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import { Env } from "./configs/env.config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -59,7 +59,7 @@ const authRateLimiter = rateLimit({
 
 app.get(
   "/",
-  AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  AsyncHandler(async (req: Request, res: Response) => {
     const date = new Date();
     res.status(HTTPSTATUS.OK).json({
       message: "Luxe Rental API is running",

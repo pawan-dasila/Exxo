@@ -42,7 +42,7 @@ export const ErrorHandler: ErrorRequestHandler = (
   error,
   req,
   res,
-  next,
+  _next,
 ): void => {
   logger.error(error, `Error occurred on PATH: ${req.path}`);
 

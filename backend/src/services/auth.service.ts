@@ -188,7 +188,7 @@ export class AuthService {
         accessToken,
         expiresAt,
       };
-    } catch (error) {
+    } catch {
       throw new AppError(
         "Invalid or expired refresh token",
         HTTPSTATUS.UNAUTHORIZED,

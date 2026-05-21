@@ -34,7 +34,7 @@ export const Protect = (req: Request, res: Response, next: NextFunction) => {
     req.user = decoded;
 
     next();
-  } catch (error) {
+  } catch {
     return next(
       new AppError(
         "Invalid or expired access token. Please login again.",

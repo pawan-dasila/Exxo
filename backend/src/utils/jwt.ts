@@ -50,8 +50,9 @@ export const SignJwtToken = (
     ...opts,
   });
 
-  const expiresAt = isAccessToken
-    ? (jwt.decode(token) as JwtPayload)?.exp! * 1000
+  const decoded = jwt.decode(token) as JwtPayload;
+  const expiresAt = isAccessToken && decoded?.exp
+    ? decoded.exp * 1000
     : undefined;
 
   return {

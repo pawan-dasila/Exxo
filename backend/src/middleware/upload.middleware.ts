@@ -32,7 +32,7 @@ export const UploadImages = (fieldName: string, maxCount: number = 5) => {
         req.body.images = results.map(result => result.secure_url);
         
         next();
-      } catch (error) {
+      } catch {
         next(new AppError("Failed to upload images to Cloudinary", HTTPSTATUS.INTERNAL_SERVER_ERROR, ErrorCodeEnum.INTERNAL_SERVER_ERROR));
       }
     });

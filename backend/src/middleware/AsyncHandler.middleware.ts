@@ -4,7 +4,7 @@ type AsyncHandlerType = (
     req : Request,
     res : Response,
     next : NextFunction
-) => Promise<any>
+) => Promise<void>
 
 export const AsyncHandler = (handler: AsyncHandlerType) => {
     return async (req: Request, res: Response, next: NextFunction) => {

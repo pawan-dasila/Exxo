@@ -34,8 +34,8 @@ export class UserService {
     data: UpdateProfileType,
     file?: Express.Multer.File,
   ) {
-    let { firstName, lastName, email, profileImageUrl, phoneNumber, bio } =
-      data;
+    const { firstName, lastName, email, phoneNumber, bio } = data;
+    let profileImageUrl = data.profileImageUrl;
 
     if (file) {
       const uploadResult = await CloudinaryService.uploadImageBuffer(
