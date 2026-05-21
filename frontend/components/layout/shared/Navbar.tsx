@@ -1,5 +1,3 @@
-// Server Component — no "use client"
-// All interactive parts are delegated to client components in ./navbar/
 import Link from "next/link";
 import { BrandLogo } from "@/components/layout/shared/BrandLogo";
 import { DesktopSearchBar, MobileSearchDialog } from "./navbar/search-bar";
@@ -24,13 +22,10 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Desktop search bar (client) */}
         <DesktopSearchBar />
 
-        {/* Mobile search icon (client) */}
         <MobileSearchDialog />
 
-        {/* Right-side actions + mobile menu (client) */}
         <NavbarInteractive />
       </div>
     </header>
